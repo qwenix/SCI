@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using SCI.Infrastructure.EF;
 using SCI.Infrastructure.Repositories;
 using SCI.Interfaces;
+using SCI.WebAPI.Interfaces;
+using SCI.WebAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,9 +57,12 @@ namespace SCI.WebAPI {
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
