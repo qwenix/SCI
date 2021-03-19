@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces {
-    public interface IRepository<T> where T : BaseEntity {
+    public interface IDataAccessService {
 
         T GetById<T>(int id) where T : BaseEntity;
 
@@ -19,10 +19,5 @@ namespace SCI.Core.Interfaces {
         Task UpdateAsync<T>(T entity) where T : BaseEntity;
 
         Task DeleteAsync<T>(T entity) where T : BaseEntity;
-
-
-        IEnumerable<T> GetAll();
-        Task<T> GetById(int id);
-        Task<int> Add(T entity);
     }
 }

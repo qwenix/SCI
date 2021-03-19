@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Core.Entities {
-    public abstract class BaseEntity {
+namespace SCI.Core.Interfaces {
+    public interface IUserService {
 
-        public int Id { get; set; }
     }
 }

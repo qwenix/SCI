@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCI.Core.Interfaces;
 using SCI.WebAPI.Constants;
+using SCI.WebAPI.Models;
 using SCI.WebAPI.Models.Authentication;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace SCI.WebAPI.Controllers {
 
         [HttpPost("login")]
         public async Task<IActionResult> Validate(LoginRequest request) {
-
+            UserModel userModel = 
 
             if (!authService.IsEmailExist(request.Email)) {
                 return ValidationProblem(Messages.EMAIL_NOT_EXIST);

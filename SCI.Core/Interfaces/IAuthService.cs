@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces {
     public interface IAuthService {
-
+        
         bool IsEmailExist(string email);
     }
 }

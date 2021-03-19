@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Core.Entities {
-    public abstract class BaseEntity {
-
-        public int Id { get; set; }
+namespace SCI.Core.Interfaces {
+    interface IFullAccess {
     }
 }

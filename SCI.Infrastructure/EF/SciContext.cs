@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SCI.Infrastructure.Entities;
+using SCI.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

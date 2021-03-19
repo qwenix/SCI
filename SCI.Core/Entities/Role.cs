@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public abstract class BaseEntity {
+    public class Role : BaseEntity {
 
-        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
