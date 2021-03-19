@@ -16,6 +16,7 @@ namespace SCI.SharedKernel.Extensions {
         public static void AddRepositories(this IServiceCollection services) {
             services.AddTransient<IDataAccessRepository<User>, EfUserRepository>();
             services.AddTransient<IDataAccessRepository<Role>, EfRoleRepository>();
+            services.AddTransient<IUserRepository, EfUserRepository>();
         }
 
         public static void AddMainDbContext(this IServiceCollection services, 

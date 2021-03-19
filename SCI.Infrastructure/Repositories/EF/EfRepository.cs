@@ -14,8 +14,8 @@ namespace SCI.Infrastructure.Repositories.EF {
     public abstract class EfRepository<T> : IDataAccessRepository<T> 
         where T : BaseEntity, IFullAccess {
 
-        private readonly DbContext dbContext;
-        private readonly IMapper mapper;
+        protected readonly DbContext dbContext;
+        protected readonly IMapper mapper;
 
         public EfRepository(DbContext dbContext, IMapper mapper) {
             this.dbContext = dbContext;

@@ -29,8 +29,8 @@ namespace SCI.Core.Services {
         }
 
         public async Task<UserDTO> GetByEmailAsync(string email) {
-            IEnumerable<User> users = await dataAccessRepository.GetAllAsync();
-            return mapper.Map<UserDTO>(users.First(u => u.Email == email));
+            User user = await userRepository.FirstIncludedAsync(u => u.Email == email);
+            return mapper.Map<UserDTO>(user);
         }
     }
 }

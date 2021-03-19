@@ -35,21 +35,8 @@ namespace SCI.WebAPI.Controllers {
             this.dataAccessService = dataAccessService;
         }
 
-        [HttpPost]
-        public IActionResult AddAdmin() {
-            context.Set<User>().Add(new User() {
-                Email = "admin@gmail.com",
-                FirstName = "Denys",
-                LastName = "Kravtsov",
-                Password = "Admin_123",
-                Role = new Role() { Name = "Admin" }
-            });
-            context.SaveChanges();
-            return Ok();
-        }
-
         [HttpPost("login")]
-        public async Task<IActionResult> Validate(LoginRequest request) {
+        public async Task<IActionResult> Validate([FromBody] LoginRequest request) {
             UserDTO userDTO = await userService.GetByEmailAsync(request.Email);
             var userModel = mapper.Map<UserModel>(userDTO);
 
@@ -73,7 +60,7 @@ namespace SCI.WebAPI.Controllers {
         [HttpPost("logout")]
         public async Task<IActionResult> Logout() {
             await HttpContext.SignOutAsync();
-            return Redirect("/");
+            return Ok();
         }
     }
 }
