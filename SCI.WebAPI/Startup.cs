@@ -14,7 +14,6 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using SCI.Infrastructure.EF;
 using SCI.Infrastructure.Repositories;
-using SCI.WebAPI.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;

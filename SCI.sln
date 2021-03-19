@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCI.Core", "SCI.Core\SCI.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCI.Infrastructure", "SCI.Infrastructure\SCI.Infrastructure.csproj", "{B7489460-A1A7-48B5-8C54-7EE239C78F63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCI.SharedKernel", "SCI.SharedKernel\SCI.SharedKernel.csproj", "{148A59D0-5237-4157-87A2-AB91D40AD45A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCI.SharedKernel", "SCI.SharedKernel\SCI.SharedKernel.csproj", "{148A59D0-5237-4157-87A2-AB91D40AD45A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

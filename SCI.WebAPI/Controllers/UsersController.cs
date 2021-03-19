@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SCI.WebAPI.Interfaces;
+using SCI.Core.Interfaces;
+using SCI.WebAPI.Constants;
 using SCI.WebAPI.Models.Authentication;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,11 @@ namespace SCI.WebAPI.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase {
-        private readonly IUserService _userService;
 
-        public UsersController(IUserService userService) {
-            _userService = userService;
+        private IAuthService authService;
+
+        public UsersController(IAuthService authService) {
+            this.authService = authService;
         }
 
         [HttpGet("login")]
@@ -27,6 +29,12 @@ namespace SCI.WebAPI.Controllers {
 
         [HttpPost("login")]
         public async Task<IActionResult> Validate(LoginRequest request) {
+
+
+            if (!authService.IsEmailExist(request.Email)) {
+                return ValidationProblem(Messages.EMAIL_NOT_EXIST);
+            }
+
             var claims = new List<Claim>() {
                 new Claim(ClaimTypes.Email, request.Email),
                 new Claim(ClaimTypes.Role, request.Role)
@@ -43,38 +51,6 @@ namespace SCI.WebAPI.Controllers {
         public async Task<IActionResult> Logout() {
             await HttpContext.SignOutAsync();
             return Redirect("/");
-        }
-
-
-
-
-
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticationRequest model) {
-            var response = _userService.Authenticate(model);
-
-            if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
-
-            return Ok(response);
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(UserModel userModel) {
-            var response = await _userService.Register(userModel);
-
-            if (response == null) {
-                return BadRequest(new { message = "Didn't register!" });
-            }
-
-            return Ok(response);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult GetAll() {
-            var users = _userService.GetAll();
-            return Ok(users);
         }
     }
 }
