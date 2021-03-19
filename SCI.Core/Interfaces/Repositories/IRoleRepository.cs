@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Core.Interfaces {
-    public interface IUserService {
-
+namespace SCI.Core.Interfaces.Repositories {
+    public interface IRoleRepository {
     }
 }

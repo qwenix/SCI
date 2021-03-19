@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SCI.Core.DTOs;
+using SCI.Core.Entities;
 using SCI.Core.Interfaces;
+using SCI.Core.Interfaces.Services;
 using SCI.WebAPI.Constants;
 using SCI.WebAPI.Models;
 using SCI.WebAPI.Models.Authentication;
@@ -17,28 +21,27 @@ namespace SCI.WebAPI.Controllers {
     [Route("[controller]")]
     public class UsersController : ControllerBase {
 
-        private IAuthService authService;
+        private readonly DataAccessService<User> dataAccessService;
+        private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public UsersController(IAuthService authService) {
-            this.authService = authService;
-        }
-
-        [HttpGet("login")]
-        public IActionResult Login(LoginResponse response) {
-            return Ok();
+        public UsersController(DataAccessService<User> dataAccessService, 
+            IUserService userService, IMapper mapper) {
+            this.userService = userService;
+            this.dataAccessService = dataAccessService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Validate(LoginRequest request) {
-            UserModel userModel = 
+            var userModel = mapper.Map<UserModel>(userService.GetByEmailAsync(request.Email));
 
-            if (!authService.IsEmailExist(request.Email)) {
+            if (userModel == null) {
                 return ValidationProblem(Messages.EMAIL_NOT_EXIST);
             }
 
             var claims = new List<Claim>() {
                 new Claim(ClaimTypes.Email, request.Email),
-                new Claim(ClaimTypes.Role, request.Role)
+                new Claim(ClaimTypes.Role, userModel.Role)
             };
             
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Infrastructure.EF {
+namespace SCI.Infrastructure.Contexts {
     public class SciContext : DbContext {
 
         public DbSet<User> Users { get; set; }

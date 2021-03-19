@@ -12,8 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using SCI.Infrastructure.EF;
-using SCI.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +33,7 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
+            services.a
             services.AddDbContext<SciContext>(options => {
                 string connection = Configuration.GetConnectionString(CONNECTION_STRING);
                 options.UseSqlServer(connection);

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces {
-    interface IFullAccess {
-    }
+
+    /// <summary>
+    /// Use this interface on Entities or DTOs that can use as generics in IDataAccessService and IDataAccessRepository realisations.
+    /// </summary>
+    public interface IFullAccess { }
 }

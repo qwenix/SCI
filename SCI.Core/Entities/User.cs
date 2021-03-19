@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SCI.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public class User : BaseEntity {
+    public class User : BaseEntity, IFullAccess {
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
