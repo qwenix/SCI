@@ -14,9 +14,5 @@ namespace SCI.Infrastructure.EF {
         public SciContext(DbContextOptions<SciContext> options) : base (options) {
 
         }
-
-        public async Task<int> SaveChangesAsync() {
-            return await base.SaveChangesAsync();
-        }
     }
 }

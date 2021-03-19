@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,9 +14,7 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using SCI.Infrastructure.EF;
 using SCI.Infrastructure.Repositories;
-using SCI.Interfaces;
-using SCI.WebAPI.Interfaces;
-using SCI.WebAPI.Services;
+using SCI.WebAPI.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +22,13 @@ using System.Threading.Tasks;
 
 namespace SCI.WebAPI {
     public class Startup {
+        private const string SWAGGER_VERSION = "v1";
+        private const string SWAGGER_TITLE = "SCI.WebAPI";
+        private const string SWAGGER_ENDPOINT_URL = "/swagger/v1/swagger.json";
+        private const string SWAGGER_ENDPOINT_NAME = "SCI.WebAPI v1";
+
+        private const string CONNECTION_STRING = "SciConnection";
+
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
@@ -30,19 +36,34 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.AddDbContext<SciContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("SciConnection")));
+            services.AddDbContext<SciContext>(options => {
+                string connection = Configuration.GetConnectionString(CONNECTION_STRING);
+                options.UseSqlServer(connection);
+                }
+            );
 
-            services.AddScoped(typeof(IRepository<>), typeof(UserRepository<>));
-            services.AddAutoMapper(typeof(UserProfile));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/login";
+                    options.AccessDeniedPath = "/denied";
+                    options.Events = new CookieAuthenticationEvents() {
+                        OnSignedIn = async context => {
+                            await Task.CompletedTask;
+                        },
+                        OnValidatePrincipal = async context => {
+                            await Task.CompletedTask;
+                        }
+                    };
+                });
 
             services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SCI.WebAPI", Version = "v1" });
+                c.SwaggerDoc(SWAGGER_VERSION, new OpenApiInfo { 
+                    Title = SWAGGER_TITLE, 
+                    Version = SWAGGER_VERSION 
+                });
             });
-
-            services.AddScoped<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -50,7 +71,7 @@ namespace SCI.WebAPI {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SCI.WebAPI v1");
+                    c.SwaggerEndpoint(SWAGGER_ENDPOINT_URL, SWAGGER_ENDPOINT_NAME);
                 });
             }
 
@@ -62,7 +83,8 @@ namespace SCI.WebAPI {
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMiddleware<JwtMiddleware>();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
