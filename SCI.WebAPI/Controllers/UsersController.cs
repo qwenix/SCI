@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SCI.Core.DTOs;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces;
@@ -24,16 +25,33 @@ namespace SCI.WebAPI.Controllers {
         private readonly DataAccessService<User> dataAccessService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
+        private readonly DbContext context;
 
         public UsersController(DataAccessService<User> dataAccessService, 
-            IUserService userService, IMapper mapper) {
+            IUserService userService, IMapper mapper, DbContext context) {
+            this.context = context;
             this.userService = userService;
+            this.mapper = mapper;
             this.dataAccessService = dataAccessService;
+        }
+
+        [HttpPost]
+        public IActionResult AddAdmin() {
+            context.Set<User>().Add(new User() {
+                Email = "admin@gmail.com",
+                FirstName = "Denys",
+                LastName = "Kravtsov",
+                Password = "Admin_123",
+                Role = new Role() { Name = "Admin" }
+            });
+            context.SaveChanges();
+            return Ok();
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Validate(LoginRequest request) {
-            var userModel = mapper.Map<UserModel>(userService.GetByEmailAsync(request.Email));
+            UserDTO userDTO = await userService.GetByEmailAsync(request.Email);
+            var userModel = mapper.Map<UserModel>(userDTO);
 
             if (userModel == null) {
                 return ValidationProblem(Messages.EMAIL_NOT_EXIST);
@@ -52,6 +70,7 @@ namespace SCI.WebAPI.Controllers {
         }
 
         [Authorize]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout() {
             await HttpContext.SignOutAsync();
             return Redirect("/");

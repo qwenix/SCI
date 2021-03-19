@@ -9,5 +9,7 @@ namespace SCI.Core.Entities {
     public class Role : BaseEntity, IFullAccess {
 
         public string Name { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }

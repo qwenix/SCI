@@ -10,9 +10,10 @@ namespace SCI.Infrastructure.Contexts {
     public class SciContext : DbContext {
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
-        public SciContext(DbContextOptions<SciContext> options) : base (options) {
-
+        public SciContext(DbContextOptions<SciContext> options) : base(options) {
+            Database.EnsureCreated();
         }
     }
 }

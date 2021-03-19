@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.SharedKernel.MapperProfiles {
+namespace SCI.Core.MapperProfiles {
     public class MainProfile : Profile {
         public MainProfile() {
             CreateMap<UserDTO, UserModel>()

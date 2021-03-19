@@ -13,11 +13,15 @@ namespace SCI.Core.Services {
     class UserService : IUserService {
 
         private readonly IDataAccessRepository<User> dataAccessRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
 
-        public UserService(IDataAccessRepository<User> dataAccessRepository, IMapper mapper) {
+        public UserService(IMapper mapper,
+            IDataAccessRepository<User> dataAccessRepository, 
+            IUserRepository userRepository) {
             this.dataAccessRepository = dataAccessRepository;
             this.mapper = mapper;
+            this.userRepository = userRepository;
         }
         
         public UserDTO GetByEmail(string email) {

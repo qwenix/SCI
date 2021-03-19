@@ -11,7 +11,6 @@ namespace SCI.Core.Interfaces.Repositories {
         public T GetById(int id);
         public Task<T> GetByIdAsync(int id);
         public Task<IEnumerable<T>> GetAllAsync();
-        public IEnumerable<T> GetAll();
         public Task<T> AddAsync(T dto);
         public Task UpdateAsync(T dto);
         public Task DeleteAsync(T dto);

@@ -28,10 +28,6 @@ namespace SCI.Core.Interfaces.Services {
             throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<T> GetAll() {
-            throw new NotImplementedException();
-        }
-
         public virtual Task<T> AddAsync(T dto) {
             throw new NotImplementedException();
         }

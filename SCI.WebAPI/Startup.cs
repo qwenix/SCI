@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using SCI.Core.Extensions;
+using SCI.Core.MapperProfiles;
+using SCI.SharedKernel.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +24,7 @@ namespace SCI.WebAPI {
     public class Startup {
         private const string SWAGGER_VERSION = "v1";
         private const string SWAGGER_TITLE = "SCI.WebAPI";
-        private const string SWAGGER_ENDPOINT_URL = "/swagger/v1/swagger.json";
+        private const string SWAGGER_ENDPOINT_URL = "v1/swagger.json";
         private const string SWAGGER_ENDPOINT_NAME = "SCI.WebAPI v1";
 
         private const string CONNECTION_STRING = "SciConnection";
@@ -33,26 +36,20 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.a
-            services.AddDbContext<SciContext>(options => {
+            services.AddMainDbContext(options => {
                 string connection = Configuration.GetConnectionString(CONNECTION_STRING);
                 options.UseSqlServer(connection);
-                }
-            );
+            });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.LoginPath = "/login";
                     options.AccessDeniedPath = "/denied";
-                    options.Events = new CookieAuthenticationEvents() {
-                        OnSignedIn = async context => {
-                            await Task.CompletedTask;
-                        },
-                        OnValidatePrincipal = async context => {
-                            await Task.CompletedTask;
-                        }
-                    };
                 });
+
+            services.AddRepositories();
+            services.AddCoreServices();
+            services.AddAutoMapper(typeof(MainProfile));
 
             services.AddCors();
             services.AddControllers();

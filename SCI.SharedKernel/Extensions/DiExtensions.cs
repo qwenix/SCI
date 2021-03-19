@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SCI.Core.DTOs;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces.Repositories;
+using SCI.Infrastructure.Contexts;
 using SCI.Infrastructure.Repositories.EF;
 using System;
 using System.Collections.Generic;
@@ -16,9 +18,10 @@ namespace SCI.SharedKernel.Extensions {
             services.AddTransient<IDataAccessRepository<Role>, EfRoleRepository>();
         }
 
-        public static void AddSciContext(this IServiceCollection services) {
-
+        public static void AddMainDbContext(this IServiceCollection services, 
+            Action<DbContextOptionsBuilder> options) {
+            services.AddDbContext<SciContext>(options);
+            services.AddScoped<DbContext, SciContext>();
         }
-
     }
 }
