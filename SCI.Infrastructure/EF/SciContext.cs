@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Infrastructure.Contexts {
-    public class SciContext : DbContext {
+namespace SCI.Infrastructure.EF {
+    class SciContext : DbContext {
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

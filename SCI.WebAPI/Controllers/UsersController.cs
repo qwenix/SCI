@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SCI.Core.DTOs;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Services;
@@ -22,13 +21,13 @@ namespace SCI.WebAPI.Controllers {
     [Route("[controller]")]
     public class UsersController : ControllerBase {
 
-        private readonly DataAccessService<User> dataAccessService;
-        private readonly IUserService userService;
+        private readonly IDataAccessService<User> dataAccessService;
+        private readonly IAuthService userService;
         private readonly IMapper mapper;
         private readonly DbContext context;
 
-        public UsersController(DataAccessService<User> dataAccessService, 
-            IUserService userService, IMapper mapper, DbContext context) {
+        public UsersController(IDataAccessService<User> dataAccessService, 
+            IAuthService userService, IMapper mapper, DbContext context) {
             this.context = context;
             this.userService = userService;
             this.mapper = mapper;
@@ -37,8 +36,8 @@ namespace SCI.WebAPI.Controllers {
 
         [HttpPost("login")]
         public async Task<IActionResult> Validate([FromBody] LoginRequest request) {
-            UserDTO userDTO = await userService.GetByEmailAsync(request.Email);
-            var userModel = mapper.Map<UserModel>(userDTO);
+            User user = await userService.FindUserAsync(request.Email);
+            var userModel = mapper.Map<UserModel>(user);
 
             if (userModel == null) {
                 return ValidationProblem(Messages.EMAIL_NOT_EXIST);

@@ -12,9 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using SCI.Core.Extensions;
-using SCI.Core.MapperProfiles;
-using SCI.SharedKernel.Extensions;
+using SCI.Configuration;
+using SCI.Infrastructure.Extensions;
+using SCI.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +22,6 @@ using System.Threading.Tasks;
 
 namespace SCI.WebAPI {
     public class Startup {
-        private const string SWAGGER_VERSION = "v1";
-        private const string SWAGGER_TITLE = "SCI.WebAPI";
-        private const string SWAGGER_ENDPOINT_URL = "v1/swagger.json";
-        private const string SWAGGER_ENDPOINT_NAME = "SCI.WebAPI v1";
-
-        private const string CONNECTION_STRING = "SciConnection";
 
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -36,29 +30,14 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.AddMainDbContext(options => {
-                string connection = Configuration.GetConnectionString(CONNECTION_STRING);
-                options.UseSqlServer(connection);
-            });
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
-                    options.LoginPath = "/login";
-                    options.AccessDeniedPath = "/denied";
-                });
-
+            services.AddMainDbContext(Configuration);
+            services.AddAuth();
             services.AddRepositories();
             services.AddCoreServices();
             services.AddAutoMapper(typeof(MainProfile));
-
             services.AddCors();
             services.AddControllers();
-            services.AddSwaggerGen(c => {
-                c.SwaggerDoc(SWAGGER_VERSION, new OpenApiInfo { 
-                    Title = SWAGGER_TITLE, 
-                    Version = SWAGGER_VERSION 
-                });
-            });
+            services.AddSwager();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -66,7 +45,7 @@ namespace SCI.WebAPI {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint(SWAGGER_ENDPOINT_URL, SWAGGER_ENDPOINT_NAME);
+                    c.SwaggerEndpoint("v1/swagger.json", "SCI.WebAPI v1");
                 });
             }
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SCI.Core.DTOs;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Repositories;
@@ -10,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Infrastructure.Repositories.EF {
-    public abstract class EfRepository<T> : IDataAccessRepository<T> 
+namespace SCI.Infrastructure.EF.Repositories {
+    abstract class DataAccessRepository<T> : IDataAccessRepository<T> 
         where T : BaseEntity, IFullAccess {
 
         protected readonly DbContext dbContext;
         protected readonly IMapper mapper;
 
-        public EfRepository(DbContext dbContext, IMapper mapper) {
+        public DataAccessRepository(DbContext dbContext, IMapper mapper) {
             this.dbContext = dbContext;
             this.mapper = mapper;
         }

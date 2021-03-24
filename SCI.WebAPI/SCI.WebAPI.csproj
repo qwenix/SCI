@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SCI.Core\SCI.Core.csproj" />
-    <ProjectReference Include="..\SCI.SharedKernel\SCI.SharedKernel.csproj" />
+    <ProjectReference Include="..\SCI.Infrastructure\SCI.Infrastructure.csproj" />
+    <ProjectReference Include="..\SCI.Services\SCI.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,16 @@
-﻿using SCI.Core.DTOs;
-using SCI.Core.Entities;
+﻿using SCI.Core.Entities;
+using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Repositories;
+using SCI.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Core.Interfaces.Services {
-    public abstract class DataAccessService<T> where T : BaseEntity, IFullAccess {
+namespace SCI.Services {
+    abstract class DataAccessService<T> : IDataAccessService<T> 
+        where T : BaseEntity, IFullAccess {
 
         private readonly IDataAccessRepository<T> dataAccessRepository;
 
