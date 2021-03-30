@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public class User : BaseEntity, IFullAccess {
+    public class User : BaseEntity {
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

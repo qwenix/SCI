@@ -15,7 +15,6 @@ namespace SCI.Infrastructure.Extensions {
     public static class DiExtensions {
 
         public static void AddRepositories(this IServiceCollection services) {
-            services.AddTransient<IDataAccessRepository<User>, UserRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
 

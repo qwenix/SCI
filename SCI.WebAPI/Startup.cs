@@ -32,9 +32,12 @@ namespace SCI.WebAPI {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMainDbContext(Configuration);
             services.AddAuth();
+
             services.AddRepositories();
             services.AddCoreServices();
-            services.AddAutoMapper(typeof(MainProfile));
+
+            services.AddAutoMapper(typeof(MapperProfile));
+
             services.AddCors();
             services.AddControllers();
             services.AddSwager();

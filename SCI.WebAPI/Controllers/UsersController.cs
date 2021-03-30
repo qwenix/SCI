@@ -21,17 +21,12 @@ namespace SCI.WebAPI.Controllers {
     [Route("[controller]")]
     public class UsersController : ControllerBase {
 
-        private readonly IDataAccessService<User> dataAccessService;
         private readonly IAuthService userService;
         private readonly IMapper mapper;
-        private readonly DbContext context;
 
-        public UsersController(IDataAccessService<User> dataAccessService, 
-            IAuthService userService, IMapper mapper, DbContext context) {
-            this.context = context;
+        public UsersController(IAuthService userService, IMapper mapper) {
             this.userService = userService;
             this.mapper = mapper;
-            this.dataAccessService = dataAccessService;
         }
 
         [HttpPost("login")]
@@ -48,7 +43,8 @@ namespace SCI.WebAPI.Controllers {
                 new Claim(ClaimTypes.Role, userModel.Role)
             };
             
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, 
+                CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await HttpContext.SignInAsync(claimsPrincipal);
 
