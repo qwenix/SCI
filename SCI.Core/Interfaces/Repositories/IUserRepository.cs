@@ -9,5 +9,8 @@ using System.Threading.Tasks;
 namespace SCI.Core.Interfaces.Repositories {
     public interface IUserRepository {
         public Task<User> FirstIncludedAsync(Expression<Func<User, bool>> predicate);
+        public Task<IEnumerable<User>> GetAllAsync();
+        public IEnumerable<User> GetAll();
+
     }
 }

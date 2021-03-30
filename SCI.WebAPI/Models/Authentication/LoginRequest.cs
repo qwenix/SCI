@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SCI.WebAPI.Models.Authentication {
     public class LoginRequest {
-        [RegularExpression(RegularExpressions.EMAIL, ErrorMessage = Messages.INVALID_FORMAT)]
+        [RegularExpression(RegularExpressions.EMAIL_REGEX, ErrorMessage = Messages.INVALID_FORMAT)]
         public string Email { get; set; }
 
         //[RegularExpression(RegularExpressions.PASSWORD, ErrorMessage = Messages.INVALID_FORMAT)]

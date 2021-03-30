@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public class Role : BaseEntity, IFullAccess {
+    public class Role : BaseEntity {
 
         public string Name { get; set; }
 

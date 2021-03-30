@@ -18,10 +18,6 @@ namespace SCI.Services {
             this.mapper = mapper;
             this.userRepository = userRepository;
         }
-        
-        public User FindUser(string email) {
-            throw new NotImplementedException();
-        }
 
         public async Task<User> FindUserAsync(string email) {
             User user = await userRepository.FirstIncludedAsync(u => u.Email == email);

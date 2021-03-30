@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Configuration {
-    public class MainProfile : Profile {
-        public MainProfile() {
+    public class MapperProfile : Profile {
+        public MapperProfile() {
             CreateMap<User, UserModel>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name))
