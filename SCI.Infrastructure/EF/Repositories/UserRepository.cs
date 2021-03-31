@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces.Repositories;
@@ -12,26 +13,25 @@ using System.Threading.Tasks;
 namespace SCI.Infrastructure.EF.Repositories {
     public class UserRepository : IUserRepository {
 
-        protected readonly DbContext dbContext;
-        protected readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public UserRepository(DbContext dbContext, IMapper mapper) {
-            this.dbContext = dbContext;
-            this.mapper = mapper;
+        public UserRepository(UserManager<User> userManager, 
+            RoleManager<IdentityRole> roleManager) {
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
-        public async Task<User> FirstIncludedAsync(Expression<Func<User, bool>> predicate) {
-            return await dbContext.Set<User>()
-                .Include(x => x.Role)
-                .FirstAsync(predicate);
+        public async Task<IdentityResult> AddUserToRoleAsync(User user, string roleName) {
+            return await userManager.AddToRoleAsync(user, roleName);
         }
 
-        public virtual async Task<IEnumerable<User>> GetAllAsync() {
-            return await dbContext.Set<User>().ToListAsync();
+        public async Task<IdentityResult> AddUserAsync(User user, string password) {
+            return await userManager.CreateAsync(user, password);
         }
 
-        public virtual IEnumerable<User> GetAll() {
-            return dbContext.Set<User>().ToList();
+        public async Task<IdentityResult> AddRoleAsync(IdentityRole role) {
+            return await roleManager.CreateAsync(role);
         }
     }
 }

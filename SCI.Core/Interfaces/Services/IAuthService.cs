@@ -1,4 +1,5 @@
-﻿using SCI.Core.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using SCI.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,10 @@ using System.Threading.Tasks;
 namespace SCI.Core.Interfaces.Services {
     public interface IAuthService {
 
-        public Task<User> FindUserAsync(string email);
+        Task RegisterUserAsync(User user, string roleName, string password);
+        Task RegisterAdminAsync(User user);
+        Task RegisterCompanyAsync(Company company, User CompanyAdmin);
+
+        Task CreateRoleAsync(IdentityRole role);
     }
 }

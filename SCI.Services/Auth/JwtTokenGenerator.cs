@@ -32,13 +32,13 @@ namespace SCI.Services.Auth {
             tokenLifetime = settings.TokenLifetime;
         }
 
-        public string GenerateTokenForClaims(IEnumerable<Claim> userClaims) {
+        public string GenerateTokenForClaims(IEnumerable<Claim> claims) {
             DateTime currentDate = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
                     issuer: TokenValidationParameters.ValidIssuer,
                     audience: TokenValidationParameters.ValidAudience,
                     notBefore: currentDate,
-                    claims: userClaims,
+                    claims: claims,
                     expires: currentDate.Add(TimeSpan.FromMinutes(tokenLifetime)),
                     signingCredentials: new SigningCredentials(
                         key: TokenValidationParameters.IssuerSigningKey,

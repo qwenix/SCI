@@ -53,10 +53,15 @@ namespace SCI.Configuration {
 
         public static void AddRepositories(this IServiceCollection services) {
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
         }
 
         public static void AddCoreServices(this IServiceCollection services) {
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IEmailService, EmailService>();
+
+            services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
+            services.AddSingleton<IRefreshTokenFactory, RefreshTokenFactory>();
         }
 
         public static void AddMainDbContext(this IServiceCollection services,
@@ -70,11 +75,11 @@ namespace SCI.Configuration {
 
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services) {
             services.AddIdentity<User, IdentityRole>(
-                    config => {
-                        config.User.RequireUniqueEmail = false;
-                        config.Password.RequireNonAlphanumeric = false;
-                        config.Password.RequireDigit = true;
-                    })
+                config => {
+                    config.User.RequireUniqueEmail = true;
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.Password.RequireDigit = true;
+                })
                 .AddEntityFrameworkStores<SciContext>();
             return services;
         }

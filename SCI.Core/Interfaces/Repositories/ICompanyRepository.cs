@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces.Repositories {
-    public interface IRoleRepository {
-        public Task<IEnumerable<Role>> GetAllAsync();
-        public IEnumerable<Role> GetAll();
+    public interface ICompanyRepository {
+        Task AddAsync(Company company);
     }
 }

@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public class Role : IdentityRole {
-
+    public partial class Company {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }

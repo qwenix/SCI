@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SCI.Core.Entities;
+﻿using SCI.Core.Entities;
+using System.Threading;
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace SCI.Infrastructure.EF {
-    public class SciContext : DbContext {
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
+    public class SciContext : IdentityDbContext<User> {
+
+        public SciContext() { }
 
         public SciContext(DbContextOptions<SciContext> options) : base(options) {
             Database.EnsureCreated();
