@@ -13,16 +13,13 @@ namespace SCI.Services {
         private const string DOMAIN_EMAIL = "kdeniis2088@gmail.com";
 
         public async Task SendEmailAsync(string email, string message) {
-            MailAddress from = new(DOMAIN_EMAIL, "SCI Admin");
-            MailAddress to = new(email);
-            MailMessage m = new(from, to);
-            m.Subject = "Password";
-            m.Body = $"<h2>Your password</h2><p>{message}</p";
-            m.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
-            smtp.Credentials = new NetworkCredential("kdeniis2088@gmail.com", "ujlpts5E2088");
-            smtp.EnableSsl = true;
-            await smtp.SendMailAsync(m);
+            var smtpClient = new SmtpClient("smtp.gmail.com") {
+                Port = 587,
+                Credentials = new NetworkCredential(DOMAIN_EMAIL, "ujlpts5E2088"),
+                EnableSsl = true,
+            };
+
+            await smtpClient.SendMailAsync(DOMAIN_EMAIL, email, "Password", message);
         }
     }
 }

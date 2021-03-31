@@ -12,16 +12,12 @@ using System.Threading.Tasks;
 
 
 namespace SCI.Infrastructure.EF.Repositories {
-    public class CompanyRepository : ICompanyRepository {
+    public class CompanyRepository : BaseRepository, ICompanyRepository {
 
-        private readonly DbContext context;
-
-        public CompanyRepository(DbContext context) {
-            this.context = context;
-        }
+        public CompanyRepository(DbContext context) : base(context) { }
 
         public async Task AddAsync(Company company) {
-            await context.Set<Company>().AddAsync(company);
+            await dbContext.Set<Company>().AddAsync(company);
         }
     }
 }

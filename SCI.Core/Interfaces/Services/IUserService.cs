@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces.Services {
 
-    public record TokenKeys(string AccessToken, string RefreshToken);
-
-    public interface IAuthService {
+    public interface IUserService {
 
         Task RegisterUserAsync(User user, string roleName, string password);
         Task RegisterAdminAsync(User user);
         Task RegisterCompanyAsync(Company company, User CompanyAdmin);
 
+        /// <returns>Refresh Token</returns>
         Task<TokenKeys> LoginAsync(string username, string password);
 
         Task CreateRoleAsync(IdentityRole role);

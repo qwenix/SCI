@@ -1,5 +1,4 @@
 ﻿using SCI.Core.Constants;
-using SCI.WebAPI.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

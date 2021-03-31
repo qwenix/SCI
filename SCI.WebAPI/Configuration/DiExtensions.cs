@@ -78,7 +78,7 @@ namespace SCI.Configuration {
                 config => {
                     config.User.RequireUniqueEmail = true;
                     config.Password.RequireNonAlphanumeric = false;
-                    config.Password.RequireDigit = true;
+                    config.Password.RequireDigit = false;
                 })
                 .AddEntityFrameworkStores<SciContext>();
             return services;

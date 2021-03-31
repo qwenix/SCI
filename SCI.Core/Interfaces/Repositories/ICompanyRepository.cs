@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces.Repositories {
-    public interface ICompanyRepository {
+    public interface ICompanyRepository : IBaseRepository {
         Task AddAsync(Company company);
     }
 }

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
     public partial class Company {
-        public string Id { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
+
+        public User User { get; set; }
     }
 }

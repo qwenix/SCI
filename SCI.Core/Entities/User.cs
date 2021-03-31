@@ -11,5 +11,7 @@ namespace SCI.Core.Entities {
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public Company Company { get; set; }
     }
 }

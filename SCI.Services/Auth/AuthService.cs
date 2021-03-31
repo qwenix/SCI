@@ -55,10 +55,13 @@ namespace SCI.Services.Auth {
         public async Task RegisterCompanyAsync(Company company, User companyAdmin) {
             string password = passwordGenerator.GeneratePassword();
             await RegisterUserAsync(companyAdmin, Roles.COMPANY_ADMIN, password);
-            company.Id = companyAdmin.Id;
+            company.UserId = companyAdmin.Id;
 
             await companyRepository.AddAsync(company);
+            await companyRepository.SaveChangesAsync();
+
             await emailService.SendEmailAsync(companyAdmin.Email, password);
+            
         }
 
         public async Task CreateRoleAsync(IdentityRole role) {
@@ -68,7 +71,7 @@ namespace SCI.Services.Auth {
             }
         }
 
-        public async Task<string> LoginAsync(string username, string password) {
+        public async Task<TokenKeys> LoginAsync(string username, string password) {
             User user = await userRepository.FindByUsernameAsync(username);
             if (user == null) {
                 throw new Exception("User does not exist!");
@@ -84,11 +87,7 @@ namespace SCI.Services.Auth {
             var accessToken = tokenGenerator.GenerateTokenForClaims(userClaims);
             var refreshToken = refreshTokenFactory.GenerateRefreshToken();
 
-            return new LoginResponseDTO {
-                Email = user.Email,
-                Token = accessToken,
-                RefreshToken = refreshToken
-            };
+            return new TokenKeys(accessToken, refreshToken);
         }
 
         private async Task<Claim[]> GetAuthTokenClaimsForUserAsync(User user) {

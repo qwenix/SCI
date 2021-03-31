@@ -10,7 +10,6 @@ using SCI.Core.Constants;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Services;
-using SCI.WebAPI.Constants;
 using SCI.WebAPI.Models;
 using SCI.WebAPI.Models.Auth;
 using SCI.WebAPI.Models.Authentication;
@@ -23,109 +22,23 @@ using System.Threading.Tasks;
 namespace SCI.WebAPI.Controllers {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase {
+    public partial class UsersController : ControllerBase {
 
-        private readonly IAuthService authService;
         private readonly IMapper mapper;
+        private readonly IUserService userService;
 
-        public UsersController(IAuthService authService, IMapper mapper) {
+        public UsersController(
+            IAuthService authService, 
+            IUserService userService,
+            IMapper mapper) {
             this.authService = authService;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
-        [Authorize(Roles = Roles.GOD)]
-        [HttpPost("registerAdmin")]
-        public async Task<IActionResult> RegisterAdminAsync([FromBody] AdminRegistrationRequest request) {
-            if (ModelState.IsValid) {
-                var user = mapper.Map<User>(request);
-                await authService.RegisterAdminAsync(user);
-                return Ok();
-            }
-            return ValidationProblem(ModelState);
+        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD)]
+        public Task<IActionResult> DeleteUserAsync(string username) {
+
         }
-
-        [AllowAnonymous]
-        [HttpPost("registerUser")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegistrationRequest request) {
-            if (ModelState.IsValid) {
-                var user = mapper.Map<User>(request);
-                await authService.RegisterUserAsync(user, Roles.USER, request.Password);
-                return Ok();
-            }
-            return ValidationProblem(ModelState);
-        }
-
-        [Authorize(Roles = Roles.GOD + "," + Roles.ADMIN)]
-        [HttpPost("registerCompany")]
-        public async Task<IActionResult> RegisterCompanyAsync([FromBody] CompanyRegistrationRequest request) {
-            if (ModelState.IsValid) {
-                var company = mapper.Map<Company>(request);
-                var user = mapper.Map<User>(request);
-                await authService.RegisterCompanyAsync(company, user);
-                return Ok();
-            }
-            return ValidationProblem(ModelState);
-        }
-
-        [HttpPost("registerGod")]
-        public async Task<IActionResult> RegisterGod() {
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.GOD });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.COMPANY_ADMIN });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.ADMIN });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.USER });
-
-            var user = new User {
-                Email = "denys.kravtsov@nure.ua",
-                FirstName = "Denys",
-                LastName = "Kravtsov"
-            };
-            user.UserName = user.Email;
-
-            await authService.RegisterUserAsync(user, Roles.GOD, "ujlpts5E2088");
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public async Task<ObjectResult> LoginAsync([FromBody] LoginRequest request) {
-            var refreshToken = await authService.LoginAsync(request.Email, request.Password);
-
-            HttpContext.Response.Cookies.Append("refreshToken", refreshToken, 
-                new CookieOptions {
-                    HttpOnly = true,
-                    Secure = true
-                });
-
-            return Ok(refreshToken);
-        }
-
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Validate([FromBody] LoginRequest request) {
-        //    User user = await authService.FindUserAsync(request.Email);
-        //    var userModel = mapper.Map<UserModel>(user);
-
-        //    if (userModel == null) {
-        //        return ValidationProblem(Messages.EMAIL_NOT_EXIST);
-        //    }
-
-        //    var claims = new List<Claim>() {
-        //        new Claim(ClaimTypes.Email, request.Email),
-        //        new Claim(ClaimTypes.Role, userModel.Role)
-        //    };
-
-        //    var claimsIdentity = new ClaimsIdentity(claims, 
-        //        CookieAuthenticationDefaults.AuthenticationScheme);
-        //    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-        //    await HttpContext.SignInAsync(claimsPrincipal);
-
-        //    return Ok();
-        //}
-
-        //[Authorize]
-        //[HttpPost("logout")]
-        //public async Task<IActionResult> Logout() {
-        //    await HttpContext.SignOutAsync();
-        //    return Ok();
-        //}
     }
 }
