@@ -33,5 +33,17 @@ namespace SCI.Infrastructure.EF.Repositories {
         public async Task<IdentityResult> AddRoleAsync(IdentityRole role) {
             return await roleManager.CreateAsync(role);
         }
+
+        public Task<User> FindByUsernameAsync(string username) {
+            return userManager.FindByNameAsync(username);
+        }
+
+        public Task<bool> CheckPasswordAsync(User user, string password) {
+            return userManager.CheckPasswordAsync(user, password);
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user) {
+            return userManager.GetRolesAsync(user);
+        }
     }
 }

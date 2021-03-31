@@ -7,6 +7,7 @@ using SCI.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,37 +68,38 @@ namespace SCI.Services.Auth {
             }
         }
 
-        //public async Task<LoginResponseDTO> LoginAsync(LoginRequestDTO request) {
-        //    User user = await userRepository.FindByEmailAsync(request.Email);
-        //    if (user == null) {
-        //        throw new Exception("User does not exist!");
-        //    }
+        public async Task<string> LoginAsync(string username, string password) {
+            User user = await userRepository.FindByUsernameAsync(username);
+            if (user == null) {
+                throw new Exception("User does not exist!");
+            }
 
-        //    bool passwordIsCorrect = await userRepository.CheckPasswordAsync(user, request.Password);
-        //    if (!passwordIsCorrect) {
-        //        throw new Exception("Password is incorrect!");
-        //    }
-        //    Claim[] userClaims = await GetAuthTokenClaimsForUserAsync(user);
+            bool passwordCorrect = await userRepository.CheckPasswordAsync(user, password);
+            if (!passwordCorrect) {
+                throw new Exception("Password is incorrect!");
+            }
 
-        //    var accessToken = tokenGenerator.GenerateTokenForClaims(userClaims);
-        //    var refreshToken = refreshTokenFactory.GenerateRefreshToken();
+            Claim[] userClaims = await GetAuthTokenClaimsForUserAsync(user);
 
-        //    return new LoginResponseDTO {
-        //        Email = user.Email,
-        //        Token = accessToken,
-        //        RefreshToken = refreshToken
-        //    };
-        //}
+            var accessToken = tokenGenerator.GenerateTokenForClaims(userClaims);
+            var refreshToken = refreshTokenFactory.GenerateRefreshToken();
 
-        //private async Task<Claim[]> GetAuthTokenClaimsForUserAsync(User user) {
-        //    IList<string> userRoles = await userRepository.GetRolesAsync(user);
-        //    var userClaims = new[] {
-        //        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        //        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-        //        new Claim(ClaimsIdentity.DefaultRoleClaimType, userRoles.FirstOrDefault())
-        //    };
-        //    return userClaims;
-        //}
+            return new LoginResponseDTO {
+                Email = user.Email,
+                Token = accessToken,
+                RefreshToken = refreshToken
+            };
+        }
+
+        private async Task<Claim[]> GetAuthTokenClaimsForUserAsync(User user) {
+            IList<string> userRoles = await userRepository.GetRolesAsync(user);
+            var userClaims = new[] {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRoles.First())
+            };
+            return userClaims;
+        }
 
         //public async Task<TokenRefreshResponseDTO> RefreshTokenAsync(TokenRefreshRequestDTO request) {
         //    string userEmail = GetEmailOfAuthorizationToken(request);

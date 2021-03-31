@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,12 +28,12 @@ namespace SCI.WebAPI.Controllers {
         private readonly IAuthService authService;
         private readonly IMapper mapper;
 
-        public UsersController(IAuthService userService, IMapper mapper) {
-            this.authService = userService;
+        public UsersController(IAuthService authService, IMapper mapper) {
+            this.authService = authService;
             this.mapper = mapper;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Roles.GOD)]
         [HttpPost("registerAdmin")]
         public async Task<IActionResult> RegisterAdminAsync([FromBody] AdminRegistrationRequest request) {
             if (ModelState.IsValid) {
@@ -43,6 +44,7 @@ namespace SCI.WebAPI.Controllers {
             return ValidationProblem(ModelState);
         }
 
+        [AllowAnonymous]
         [HttpPost("registerUser")]
         public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegistrationRequest request) {
             if (ModelState.IsValid) {
@@ -53,6 +55,7 @@ namespace SCI.WebAPI.Controllers {
             return ValidationProblem(ModelState);
         }
 
+        [Authorize(Roles = Roles.GOD + "," + Roles.ADMIN)]
         [HttpPost("registerCompany")]
         public async Task<IActionResult> RegisterCompanyAsync([FromBody] CompanyRegistrationRequest request) {
             if (ModelState.IsValid) {
@@ -82,17 +85,19 @@ namespace SCI.WebAPI.Controllers {
             return Ok();
         }
 
-        //[AllowAnonymous]
-        //[HttpPost("login")]
-        //public async Task<ObjectResult> LoginAsync([FromBody] LoginRequestDTO request) {
-        //    var response = await authService.LoginAsync(request);
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ObjectResult> LoginAsync([FromBody] LoginRequest request) {
+            var refreshToken = await authService.LoginAsync(request.Email, request.Password);
 
-        //    HttpContext.Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions {
-        //        HttpOnly = true,
-        //        Secure = true
-        //    });
-        //    return Ok(response.Token);
-        //}
+            HttpContext.Response.Cookies.Append("refreshToken", refreshToken, 
+                new CookieOptions {
+                    HttpOnly = true,
+                    Secure = true
+                });
+
+            return Ok(refreshToken);
+        }
 
         //[HttpPost("login")]
         //public async Task<IActionResult> Validate([FromBody] LoginRequest request) {
@@ -107,7 +112,7 @@ namespace SCI.WebAPI.Controllers {
         //        new Claim(ClaimTypes.Email, request.Email),
         //        new Claim(ClaimTypes.Role, userModel.Role)
         //    };
-            
+
         //    var claimsIdentity = new ClaimsIdentity(claims, 
         //        CookieAuthenticationDefaults.AuthenticationScheme);
         //    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

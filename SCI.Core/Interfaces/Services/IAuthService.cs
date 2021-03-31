@@ -13,6 +13,9 @@ namespace SCI.Core.Interfaces.Services {
         Task RegisterAdminAsync(User user);
         Task RegisterCompanyAsync(Company company, User CompanyAdmin);
 
+        /// <returns>Refresh Token</returns>
+        Task<string> LoginAsync(string username, string password);
+
         Task CreateRoleAsync(IdentityRole role);
     }
 }
