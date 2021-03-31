@@ -59,6 +59,7 @@ namespace SCI.Configuration {
         public static void AddCoreServices(this IServiceCollection services) {
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
             services.AddSingleton<IRefreshTokenFactory, RefreshTokenFactory>();

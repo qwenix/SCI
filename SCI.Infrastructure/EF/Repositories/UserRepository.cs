@@ -34,16 +34,24 @@ namespace SCI.Infrastructure.EF.Repositories {
             return await roleManager.CreateAsync(role);
         }
 
-        public Task<User> FindByUsernameAsync(string username) {
-            return userManager.FindByNameAsync(username);
+        public async Task<User> FindByUsernameAsync(string username) {
+            return await userManager.FindByNameAsync(username);
         }
 
-        public Task<bool> CheckPasswordAsync(User user, string password) {
-            return userManager.CheckPasswordAsync(user, password);
+        public async Task<bool> CheckPasswordAsync(User user, string password) {
+            return await userManager.CheckPasswordAsync(user, password);
         }
 
-        public Task<IList<string>> GetRolesAsync(User user) {
-            return userManager.GetRolesAsync(user);
+        public async Task<IList<string>> GetRolesAsync(User user) {
+            return await userManager.GetRolesAsync(user);
+        }
+
+        public async Task<IdentityResult> DeleteByUsernameAsync(string username) {
+            User user = await FindByUsernameAsync(username);
+            if (user is null) {
+                throw new Exception($"There is no User with username \"{username}\"");
+            }
+            return await userManager.DeleteAsync(user);
         }
     }
 }

@@ -10,14 +10,10 @@ namespace SCI.Core.Interfaces.Services {
 
     public interface IUserService {
 
-        Task RegisterUserAsync(User user, string roleName, string password);
-        Task RegisterAdminAsync(User user);
-        Task RegisterCompanyAsync(Company company, User CompanyAdmin);
+        Task DeleteUserAsync(string username);
+        Task DeleteCompanyAdminAsync(string username);
+        Task DeleteAdminAsync(string username);
 
-        /// <returns>Refresh Token</returns>
-        Task<TokenKeys> LoginAsync(string username, string password);
-
-        Task CreateRoleAsync(IdentityRole role);
     }
 
 }

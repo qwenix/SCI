@@ -36,9 +36,25 @@ namespace SCI.WebAPI.Controllers {
             this.userService = userService;
         }
 
-        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD)]
-        public Task<IActionResult> DeleteUserAsync(string username) {
+        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD + "," + Roles.COMPANY_ADMIN)]
+        [HttpDelete("deleteUser")]
+        public async Task<IActionResult> DeleteUserAsync(string username) {
+            await userService.DeleteUserAsync(username);
+            return Ok();
+        }
 
+        [Authorize(Roles = Roles.GOD)]
+        [HttpDelete("deleteAdmin")]
+        public async Task<IActionResult> DeleteAdminAsync(string username) {
+            await userService.DeleteAdminAsync(username);
+            return Ok();
+        }
+
+        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD)]
+        [HttpDelete("deleteCompanyAdmin")]
+        public async Task<IActionResult> DeleteCompanyAdminAsync(string username) {
+            await userService.DeleteCompanyAdminAsync(username);
+            return Ok();
         }
     }
 }

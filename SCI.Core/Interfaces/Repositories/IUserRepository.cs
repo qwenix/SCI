@@ -16,5 +16,7 @@ namespace SCI.Core.Interfaces.Repositories {
         Task<User> FindByUsernameAsync(string username);
         Task<IList<string>> GetRolesAsync(User user);
         Task<bool> CheckPasswordAsync(User user, string password);
+
+        Task<IdentityResult> DeleteByUsernameAsync(string username);
     }
 }
