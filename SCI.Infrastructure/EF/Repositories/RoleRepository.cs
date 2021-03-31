@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Infrastructure.EF.Repositories {
-    class RoleRepository : IRoleRepository {
+    public class RoleRepository : IRoleRepository {
 
         protected readonly DbContext dbContext;
         protected readonly IMapper mapper;

@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Services {
-    class AuthService : IAuthService {
+namespace SCI.Services.Auth {
+    public class AuthService : IAuthService {
 
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;

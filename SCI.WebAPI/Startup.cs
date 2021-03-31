@@ -13,8 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using SCI.Configuration;
-using SCI.Infrastructure.Extensions;
-using SCI.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +29,8 @@ namespace SCI.WebAPI {
 
         public void ConfigureServices(IServiceCollection services) {
             services.AddMainDbContext(Configuration);
-            services.AddAuth();
+            services.AddIdentityConfiguration();
+            services.AddJwtAuth(Configuration);
 
             services.AddRepositories();
             services.AddCoreServices();

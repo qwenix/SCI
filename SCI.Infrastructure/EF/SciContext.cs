@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Infrastructure.EF {
-    class SciContext : DbContext {
+    public class SciContext : DbContext {
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

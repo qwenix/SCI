@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Infrastructure.EF.Repositories {
-    class UserRepository : IUserRepository {
+    public class UserRepository : IUserRepository {
 
         protected readonly DbContext dbContext;
         protected readonly IMapper mapper;
