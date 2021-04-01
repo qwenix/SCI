@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Configuration {
+namespace SCI.WebAPI.Configuration {
     public class MapperProfile : Profile {
         public MapperProfile() {
             CreateMap<AdminRegistrationRequest, User>()

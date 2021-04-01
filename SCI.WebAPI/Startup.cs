@@ -12,7 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using SCI.Configuration;
+using SCI.Core.Constants;
+using SCI.WebAPI.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
+            services.Configure<CertificateInfo>(Configuration.GetSection(AppSettingsStrings.CERTIFICATE_INFO));
+
             services.AddMainDbContext(Configuration);
             services.AddIdentityConfiguration();
             services.AddJwtAuth(Configuration);

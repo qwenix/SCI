@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using SCI.Core.Constants;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces.Repositories;
 using SCI.Core.Interfaces.Services;
@@ -18,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Configuration {
+namespace SCI.WebAPI.Configuration {
     public static class DiExtensions {
 
         public static void AddSwager(this IServiceCollection services) {
@@ -68,7 +69,8 @@ namespace SCI.Configuration {
         public static void AddMainDbContext(this IServiceCollection services,
             IConfiguration configuration) {
             services.AddDbContext<SciContext>(options => {
-                string connection = configuration.GetConnectionString("SciConnection");
+                string connection = configuration.GetConnectionString(
+                    AppSettingsStrings.MAIN_CONNECTION);
                 options.UseSqlServer(connection);
             });
             services.AddScoped<DbContext, SciContext>();

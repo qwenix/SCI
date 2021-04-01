@@ -61,7 +61,6 @@ namespace SCI.Services.Auth {
             await companyRepository.SaveChangesAsync();
 
             await emailService.SendEmailAsync(companyAdmin.Email, password);
-            
         }
 
         public async Task CreateRoleAsync(IdentityRole role) {
