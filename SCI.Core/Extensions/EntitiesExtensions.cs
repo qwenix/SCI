@@ -23,5 +23,10 @@ namespace SCI.Core.Extensions {
             return driver;
         }
 
+        public static IEnumerable<Ride> GetLastRides(this Driver driver, int daysPeriod) {
+            DateTime minDateTime = DateTime.Now.AddDays(-daysPeriod);
+            return driver.Rides.Where(r => r.StartDate >= minDateTime);
+        }
+
     }
 }
