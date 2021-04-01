@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using SCI.Core.Constants;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -15,8 +16,10 @@ namespace SCI.Services {
         private readonly IConfiguration configuration;
         private readonly IOptions<CertificateInfo> certificateOptions;
 
-        public AdminService(IConfiguration configuration) {
+        public AdminService(IConfiguration configuration,
+            IOptions<CertificateInfo> certificateOptions) {
             this.configuration = configuration;
+            this.certificateOptions = certificateOptions;
         }
 
         public async Task BackupDatabase(string path) {

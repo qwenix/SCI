@@ -10,6 +10,7 @@ using SCI.Core.Constants;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using SCI.WebAPI.Models;
 using SCI.WebAPI.Models.Auth;
 using SCI.WebAPI.Models.Authentication;
@@ -80,15 +81,15 @@ namespace SCI.WebAPI.Controllers {
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ObjectResult> LoginAsync([FromBody] LoginRequest request) {
-            var tokens = await authService.LoginAsync(request.Email, request.Password);
+            TokensInfo tokensInfo = await authService.LoginAsync(request.Email, request.Password);
 
-            HttpContext.Response.Cookies.Append("refreshToken", tokens.RefreshToken, 
+            HttpContext.Response.Cookies.Append("refreshToken", tokensInfo.RefreshToken, 
                 new CookieOptions {
                     HttpOnly = true,
                     Secure = true
                 });
 
-            return Ok(tokens.AccessToken);
+            return Ok(tokensInfo.AccessToken);
         }
 
         //[HttpPost("login")]

@@ -14,6 +14,7 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using SCI.Core.Constants;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using SCI.WebAPI.Configuration;
 using System;
 using System.Collections.Generic;

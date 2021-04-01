@@ -61,6 +61,7 @@ namespace SCI.WebAPI.Configuration {
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAdminService, AdminService>();
 
             services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
             services.AddSingleton<IRefreshTokenFactory, RefreshTokenFactory>();

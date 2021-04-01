@@ -4,6 +4,7 @@ using SCI.Core.Constants;
 using SCI.Core.Entities;
 using SCI.Core.Interfaces.Repositories;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace SCI.Services.Auth {
             }
         }
 
-        public async Task<TokenKeys> LoginAsync(string username, string password) {
+        public async Task<TokensInfo> LoginAsync(string username, string password) {
             User user = await userRepository.FindByUsernameAsync(username);
             if (user == null) {
                 throw new Exception("User does not exist!");
@@ -86,7 +87,7 @@ namespace SCI.Services.Auth {
             var accessToken = tokenGenerator.GenerateTokenForClaims(userClaims);
             var refreshToken = refreshTokenFactory.GenerateRefreshToken();
 
-            return new TokenKeys(accessToken, refreshToken);
+            return new TokensInfo(accessToken, refreshToken);
         }
 
         private async Task<Claim[]> GetAuthTokenClaimsForUserAsync(User user) {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using SCI.WebAPI.Middleware;
 using System;
 using System.Collections.Generic;

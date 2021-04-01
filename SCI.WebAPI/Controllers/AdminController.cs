@@ -21,7 +21,7 @@ namespace SCI.WebAPI.Controllers {
         }
         
         [HttpPost("backup")]
-        public async Task<IActionResult> BackupDatabase(string path) {
+        public async Task<IActionResult> BackupDatabase([FromBody] string path) {
             await dataManager.BackupDatabase(path);
             return Ok();
         }

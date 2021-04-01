@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using SCI.Core.Interfaces.Services;
+using SCI.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
