@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using SCI.Core.Entities.Events;
 
 namespace SCI.Infrastructure.EF {
 
@@ -16,6 +17,17 @@ namespace SCI.Infrastructure.EF {
         public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+
+        public DbSet<EngineOffEvent> EngineOffEvents { get; set; }
+        public DbSet<EngineOnEvent> EngineOnEvents { get; set; }
+        public DbSet<EquipmentInstallEvent> EquipmentInstallEvents { get; set; }
+        public DbSet<PhoneFreeEvent> PhoneFreeEvents { get; set; }
+        public DbSet<PhoneUseEvent> PhoneUseEvents { get; set; }
+        public DbSet<SlowDownEvent> SlowDownEvents { get; set; }
+        public DbSet<SpeedUpEvent> SpeedUpEvents { get; set; }
+        public DbSet<SpeedChangeEvent> SpeedChangeEvents { get; set; }
+        public DbSet<SteeringWheelEvent> SteeringWheelEvents { get; set; }
+        public DbSet<TurnEntryEvent> TurnEntryEvents { get; set; }
 
         public SciContext() { }
 
