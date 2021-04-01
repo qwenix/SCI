@@ -28,20 +28,20 @@ namespace SCI.Core.Entities {
         public int OverSpeedingAmountPriority { get; set; }
 
         public double MinTurnEntryGrade { get; set; }
-        public int AllowedTurnEntriesAmount { get; set; }
-        public int TurnEntriesAmountPriority { get; set; }
+        public int AllowedSharpTurnEntriesAmount { get; set; }
+        public int SharpTurnEntriesAmountPriority { get; set; }
 
         public double MinSpeedUpGrade { get; set; }
-        public int AllowedSpeedUpsAmount { get; set; }
-        public int SpeedUpsAmountPriority { get; set; }
+        public int AllowedSharpSpeedUpsAmount { get; set; }
+        public int SharpSpeedUpsAmountPriority { get; set; }
 
         public double MinSlowDownGrade { get; set; }
-        public int AllowedSlowDownsAmount { get; set; }
-        public int SlowDownsAmountPriority { get; set; }
+        public int AllowedSharpSlowDownsAmount { get; set; }
+        public int SharpSlowDownsAmountPriority { get; set; }
 
         public double MinSteeringWheelGrade { get; set; }
-        public int AllowedSteeringsWheelAmount { get; set; }
-        public int SteeringsWheelAmountPriority { get; set; }
+        public int AllowedSharpSteeringsWheelAmount { get; set; }
+        public int SharpSteeringsWheelAmountPriority { get; set; }
 
         public double MaxPhoneUsageTime { get; set; }
         public double AllowedPhoneUsageTime { get; set; }
