@@ -17,6 +17,7 @@ namespace SCI.Infrastructure.EF {
         public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Ride> Rides { get; set; }
 
         public DbSet<EngineOffEvent> EngineOffEvents { get; set; }
         public DbSet<EngineOnEvent> EngineOnEvents { get; set; }

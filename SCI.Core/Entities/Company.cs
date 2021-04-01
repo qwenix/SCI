@@ -24,8 +24,8 @@ namespace SCI.Core.Entities {
         public int AverageRideMilesPriority { get; set; }
 
         public double MaxSpeed { get; set; }
-        public int AllowedSpeedingAmount { get; set; }
-        public int SpeedingAmountPriority { get; set; }
+        public int AllowedOverSpeedingAmount { get; set; }
+        public int OverSpeedingAmountPriority { get; set; }
 
         public double MinTurnEntryGrade { get; set; }
         public int AllowedTurnEntriesAmount { get; set; }

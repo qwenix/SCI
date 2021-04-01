@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Extensions {
     public static class EventsExtensions {
+
     }
 }

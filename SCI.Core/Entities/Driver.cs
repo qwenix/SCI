@@ -13,6 +13,8 @@ namespace SCI.Core.Entities {
         public ApplicationUser ApplicationUser { get; set; }
         public Company Company { get; set; }
 
+        public ICollection<Ride> Rides { get; set; }
+
         #region Events
 
         public ICollection<EngineOffEvent> EngineOffEvents { get; set; } = new HashSet<EngineOffEvent>();
