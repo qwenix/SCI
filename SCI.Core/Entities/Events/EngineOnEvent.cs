@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities.Events {
-    public abstract class BaseEvent {
-        public virtual DateTime DateTime { get; set; }
+    public class EngineOnEvent : BaseEvent {
+        public double Mileage { get; set; }
     }
 }
