@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using SCI.Core.Constants;
+using SCI.Core.Interfaces.Services;
 using SCI.WebAPI.Configuration;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,8 @@ namespace SCI.WebAPI {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.Configure<CertificateInfo>(Configuration.GetSection(AppSettingsStrings.CERTIFICATE_INFO));
+            services.Configure<CertificateInfo>(
+                Configuration.GetSection(AppSettingsStrings.CERTIFICATE_INFO));
 
             services.AddMainDbContext(Configuration);
             services.AddIdentityConfiguration();
@@ -55,7 +57,7 @@ namespace SCI.WebAPI {
             }
 
             app.UseHttpsRedirection();
-
+            app.UseClientCertMiddleware();
             app.UseRouting();
             app.UseCors(x => x
                 .AllowAnyOrigin()

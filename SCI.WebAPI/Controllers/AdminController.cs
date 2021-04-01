@@ -26,5 +26,10 @@ namespace SCI.WebAPI.Controllers {
             return Ok();
         }
 
+        [HttpGet("certificateInfo")]
+        public IActionResult GetCertificateInfo() {
+            return Ok(dataManager.GetCertificateInfo());
+        }
+
     }
 }
