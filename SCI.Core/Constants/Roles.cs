@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Constants {
     public class Roles {
-        public const string USER = "User";
+        public const string DRIVER = "Driver";
         public const string ADMIN = "Admin";
-        public const string COMPANY_ADMIN = "CompanyAdmin";
+        public const string COMPANY = "Company";
         public const string GOD = "God";
     }
 }

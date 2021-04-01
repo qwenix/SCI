@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 namespace SCI.Services {
     public class UserService : IUserService {
 
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository identityRepository;
 
-        public UserService(IUserRepository userRepository) {
-            this.userRepository = userRepository;
+        public UserService(IUserRepository identityRepository) {
+            this.identityRepository = identityRepository;
         }
 
-        public async Task DeleteUserAsync(string username) {
-            await DeleteIfInRoleAsync(username, Roles.USER);
+        public async Task DeleteDriverAsync(string username) {
+            await DeleteIfInRoleAsync(username, Roles.DRIVER);
         }
 
-        public async Task DeleteCompanyAdminAsync(string username) {
-            await DeleteIfInRoleAsync(username, Roles.COMPANY_ADMIN);
+        public async Task DeleteCompanyAsync(string username) {
+            await DeleteIfInRoleAsync(username, Roles.COMPANY);
         }
 
         public async Task DeleteAdminAsync(string username) {
@@ -31,17 +31,17 @@ namespace SCI.Services {
         }
 
         private async Task DeleteIfInRoleAsync(string username, string roleName) {
-            User user = await userRepository.FindByUsernameAsync(username);
-            IList<string> userRoles = await userRepository.GetRolesAsync(user);
-            string userRole = userRoles.First();
-            if (userRole == roleName) {
-                IdentityResult result = await userRepository.DeleteByUsernameAsync(username);
+            User identity = await identityRepository.FindByUsernameAsync(username);
+            IList<string> roles = await identityRepository.GetRolesAsync(identity);
+            string role = roles.First();
+            if (role == roleName) {
+                IdentityResult result = await identityRepository.DeleteByUsernameAsync(username);
                 if (!result.Succeeded) {
                     throw new Exception(result.Errors.First().Description);
                 }
             }
             else {
-                throw new Exception($"User role is {userRole} not {roleName}");
+                throw new Exception($"User role is {role} not {roleName}");
             }
         }
     }

@@ -10,8 +10,8 @@ namespace SCI.Core.Interfaces.Services {
 
     public interface IUserService {
 
-        Task DeleteUserAsync(string username);
-        Task DeleteCompanyAdminAsync(string username);
+        Task DeleteDriverAsync(string username);
+        Task DeleteCompanyAsync(string username);
         Task DeleteAdminAsync(string username);
 
     }

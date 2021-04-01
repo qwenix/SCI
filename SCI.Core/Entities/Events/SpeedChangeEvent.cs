@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCI.Core.Entities {
-    public abstract class BaseEntity {
-        public virtual string Id { get; set; }
+namespace SCI.Core.Entities.Events {
+    public class SpeedChangeEvent : BaseEvent {
+        public double Speed { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using SCI.Infrastructure.EF;
 namespace SCI.Infrastructure.Migrations
 {
     [DbContext(typeof(SciContext))]
-    [Migration("20210331175751_InitialMigration")]
+    [Migration("20210401170544_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,17 +152,48 @@ namespace SCI.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SCI.Core.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUsers");
+                });
+
             modelBuilder.Entity("SCI.Core.Entities.Company", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("SCI.Core.Entities.Driver", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId1");
+
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("SCI.Core.Entities.User", b =>
@@ -183,12 +214,6 @@ namespace SCI.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -287,19 +312,59 @@ namespace SCI.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SCI.Core.Entities.Company", b =>
+            modelBuilder.Entity("SCI.Core.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("SCI.Core.Entities.User", "User")
-                        .WithOne("Company")
-                        .HasForeignKey("SCI.Core.Entities.Company", "UserId")
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("SCI.Core.Entities.ApplicationUser", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SCI.Core.Entities.Company", b =>
+                {
+                    b.HasOne("SCI.Core.Entities.User", "User")
+                        .WithOne("Company")
+                        .HasForeignKey("SCI.Core.Entities.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SCI.Core.Entities.Driver", b =>
+                {
+                    b.HasOne("SCI.Core.Entities.Company", "Company")
+                        .WithMany("Drivers")
+                        .HasForeignKey("CompanyId1");
+
+                    b.HasOne("SCI.Core.Entities.ApplicationUser", "ApplicationUser")
+                        .WithOne("Driver")
+                        .HasForeignKey("SCI.Core.Entities.Driver", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("SCI.Core.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Driver");
+                });
+
+            modelBuilder.Entity("SCI.Core.Entities.Company", b =>
+                {
+                    b.Navigation("Drivers");
+                });
+
             modelBuilder.Entity("SCI.Core.Entities.User", b =>
                 {
+                    b.Navigation("ApplicationUser");
+
                     b.Navigation("Company");
                 });
 #pragma warning restore 612, 618

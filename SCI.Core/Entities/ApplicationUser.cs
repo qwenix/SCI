@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public partial class Company : BaseEntity {
+    public class ApplicationUser : BaseEntity {
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public User User { get; set; }
-        public ICollection<Driver> Drivers { get; set; }
+        public Driver Driver { get; set; }
     }
 }

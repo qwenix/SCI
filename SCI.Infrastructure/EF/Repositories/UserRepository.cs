@@ -30,6 +30,10 @@ namespace SCI.Infrastructure.EF.Repositories {
             return await userManager.CreateAsync(user, password);
         }
 
+        public async Task<IdentityResult> AddUserPasswordAsync(User user, string password) {
+            return await userManager.AddPasswordAsync(user, password);
+        }
+
         public async Task<IdentityResult> AddRoleAsync(IdentityRole role) {
             return await roleManager.CreateAsync(role);
         }
@@ -47,11 +51,11 @@ namespace SCI.Infrastructure.EF.Repositories {
         }
 
         public async Task<IdentityResult> DeleteByUsernameAsync(string username) {
-            User user = await FindByUsernameAsync(username);
-            if (user is null) {
+            User identity = await FindByUsernameAsync(username);
+            if (identity is null) {
                 throw new Exception($"There is no User with username \"{username}\"");
             }
-            return await userManager.DeleteAsync(user);
+            return await userManager.DeleteAsync(identity);
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCI.Core.Constants;
 using SCI.Core.Entities;
+using SCI.Core.Extensions;
 using SCI.Core.Interfaces;
 using SCI.Core.Interfaces.Services;
 using SCI.Core.Models;
@@ -30,7 +31,7 @@ namespace SCI.WebAPI.Controllers {
         [HttpPost("registerAdmin")]
         public async Task<IActionResult> RegisterAdminAsync([FromBody] AdminRegistrationRequest request) {
             if (ModelState.IsValid) {
-                var user = mapper.Map<User>(request);
+                var user = mapper.Map<ApplicationUser>(request).SetId();
                 await authService.RegisterAdminAsync(user);
                 return Ok();
             }
@@ -38,11 +39,11 @@ namespace SCI.WebAPI.Controllers {
         }
 
         [AllowAnonymous]
-        [HttpPost("registerUser")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] UserRegistrationRequest request) {
+        [HttpPost("registerDriver")]
+        public async Task<IActionResult> RegisterDriverAsync([FromBody] DriverRegistrationRequest request) {
             if (ModelState.IsValid) {
-                var user = mapper.Map<User>(request);
-                await authService.RegisterUserAsync(user, Roles.USER, request.Password);
+                var driver = mapper.Map<Driver>(request).SetId();
+                await authService.RegisterDriverAsync(driver, request.Password);
                 return Ok();
             }
             return ValidationProblem(ModelState);
@@ -52,9 +53,8 @@ namespace SCI.WebAPI.Controllers {
         [HttpPost("registerCompany")]
         public async Task<IActionResult> RegisterCompanyAsync([FromBody] CompanyRegistrationRequest request) {
             if (ModelState.IsValid) {
-                var company = mapper.Map<Company>(request);
-                var user = mapper.Map<User>(request);
-                await authService.RegisterCompanyAsync(company, user);
+                var company = mapper.Map<Company>(request).SetId();
+                await authService.RegisterCompanyAsync(company);
                 return Ok();
             }
             return ValidationProblem(ModelState);
@@ -63,18 +63,16 @@ namespace SCI.WebAPI.Controllers {
         [HttpPost("registerGod")]
         public async Task<IActionResult> RegisterGodAsync() {
             await authService.CreateRoleAsync(new IdentityRole { Name = Roles.GOD });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.COMPANY_ADMIN });
+            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.COMPANY });
             await authService.CreateRoleAsync(new IdentityRole { Name = Roles.ADMIN });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.USER });
+            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.DRIVER });
 
-            var user = new User {
-                Email = "denys.kravtsov@nure.ua",
-                FirstName = "Denys",
-                LastName = "Kravtsov"
+            var identity = new User {
+                Email = "denys.kravtsov@nure.ua"
             };
-            user.UserName = user.Email;
+            identity.UserName = identity.Email;
 
-            await authService.RegisterUserAsync(user, Roles.GOD, "ujlpts5E2088");
+            await authService.RegisterUserAsync(identity, Roles.GOD, "ujlpts5E2088");
             return Ok();
         }
 

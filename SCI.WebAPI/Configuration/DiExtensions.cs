@@ -55,6 +55,8 @@ namespace SCI.WebAPI.Configuration {
         public static void AddRepositories(this IServiceCollection services) {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICompanyRepository, CompanyRepository>();
+            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<IDriverRepository, DriverRepository>();
         }
 
         public static void AddCoreServices(this IServiceCollection services) {

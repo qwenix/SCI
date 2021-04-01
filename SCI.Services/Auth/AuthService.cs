@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using SCI.Core.Constants;
 using SCI.Core.Entities;
+using SCI.Core.Extensions;
 using SCI.Core.Interfaces.Repositories;
 using SCI.Core.Interfaces.Services;
 using SCI.Core.Models;
@@ -16,6 +17,8 @@ namespace SCI.Services.Auth {
     public class AuthService : IAuthService {
 
         private readonly IUserRepository userRepository;
+        private readonly IDriverRepository driverRepository;
+        private readonly IApplicationUserRepository applicationUserRepository;
         private readonly ICompanyRepository companyRepository;
 
         private readonly ITokenGenerator tokenGenerator;
@@ -26,23 +29,21 @@ namespace SCI.Services.Auth {
 
         public AuthService(
             IUserRepository userRepository,
+            ICompanyRepository companyRepository,
+            IApplicationUserRepository applicationUserRepository,
+            IDriverRepository driverRepository,
             ITokenGenerator tokenGenerator,
             IRefreshTokenFactory refreshTokenFactory,
             IPasswordGenerator passwordGenerator,
-            IEmailService emailService,
-            ICompanyRepository companyRepository) {
+            IEmailService emailService) {
             this.tokenGenerator = tokenGenerator;
             this.refreshTokenFactory = refreshTokenFactory;
             this.userRepository = userRepository;
             this.passwordGenerator = passwordGenerator;
             this.emailService = emailService;
             this.companyRepository = companyRepository;
-        }
-
-        public async Task RegisterAdminAsync(User user) {
-            string password = passwordGenerator.GeneratePassword();
-            await RegisterUserAsync(user, Roles.ADMIN, password);
-            await emailService.SendEmailAsync(user.Email, password);
+            this.driverRepository = driverRepository;
+            this.applicationUserRepository = applicationUserRepository;
         }
 
         public async Task RegisterUserAsync(User user, string roleName, string password) {
@@ -53,15 +54,37 @@ namespace SCI.Services.Auth {
             await userRepository.AddUserToRoleAsync(user, roleName);
         }
 
-        public async Task RegisterCompanyAsync(Company company, User companyAdmin) {
+        public async Task RegisterAdminAsync(ApplicationUser applicationUser) {
             string password = passwordGenerator.GeneratePassword();
-            await RegisterUserAsync(companyAdmin, Roles.COMPANY_ADMIN, password);
-            company.UserId = companyAdmin.Id;
+            await userRepository.AddUserPasswordAsync(applicationUser.User, password);
+
+            await applicationUserRepository.AddAsync(applicationUser);
+            await applicationUserRepository.SaveChangesAsync();
+
+            await userRepository.AddUserToRoleAsync(applicationUser.User, Roles.ADMIN);
+
+            await emailService.SendEmailAsync(applicationUser.User.Email, password);
+        }
+
+        public async Task RegisterDriverAsync(Driver driver, string password) {
+            await userRepository.AddUserPasswordAsync(driver.ApplicationUser.User, password);
+
+            await driverRepository.AddAsync(driver);
+            
+            await userRepository.AddUserToRoleAsync(driver.ApplicationUser.User, Roles.DRIVER);
+
+            await emailService.SendEmailAsync(driver.ApplicationUser.User.Email, password);
+        }
+
+        public async Task RegisterCompanyAsync(Company company) {
+            string password = passwordGenerator.GeneratePassword();
+            await userRepository.AddUserPasswordAsync(company.User, password);
 
             await companyRepository.AddAsync(company);
             await companyRepository.SaveChangesAsync();
+            await userRepository.AddUserToRoleAsync(company.User, Roles.COMPANY);
 
-            await emailService.SendEmailAsync(companyAdmin.Email, password);
+            await emailService.SendEmailAsync(company.User.Email, password);
         }
 
         public async Task CreateRoleAsync(IdentityRole role) {

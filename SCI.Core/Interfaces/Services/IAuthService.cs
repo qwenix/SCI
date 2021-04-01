@@ -12,8 +12,9 @@ namespace SCI.Core.Interfaces.Services {
     public interface IAuthService {
 
         Task RegisterUserAsync(User user, string roleName, string password);
-        Task RegisterAdminAsync(User user);
-        Task RegisterCompanyAsync(Company company, User CompanyAdmin);
+        Task RegisterDriverAsync(Driver driver, string password);
+        Task RegisterAdminAsync(ApplicationUser applicationUser);
+        Task RegisterCompanyAsync(Company company);
 
         Task<TokensInfo> LoginAsync(string username, string password);
 

@@ -36,10 +36,10 @@ namespace SCI.WebAPI.Controllers {
             this.userService = userService;
         }
 
-        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD + "," + Roles.COMPANY_ADMIN)]
+        [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD + "," + Roles.COMPANY)]
         [HttpDelete("deleteUser")]
         public async Task<IActionResult> DeleteUserAsync(string username) {
-            await userService.DeleteUserAsync(username);
+            await userService.DeleteDriverAsync(username);
             return Ok();
         }
 
@@ -53,7 +53,7 @@ namespace SCI.WebAPI.Controllers {
         [Authorize(Roles = Roles.ADMIN + "," + Roles.GOD)]
         [HttpDelete("deleteCompanyAdmin")]
         public async Task<IActionResult> DeleteCompanyAdminAsync(string username) {
-            await userService.DeleteCompanyAdminAsync(username);
+            await userService.DeleteCompanyAsync(username);
             return Ok();
         }
     }
