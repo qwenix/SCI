@@ -23,9 +23,16 @@ using System.Threading.Tasks;
 
 namespace SCI.WebAPI.Controllers {
 
-    public partial class UsersController : ControllerBase {
+    public class AuthController : ControllerBase {
 
         private readonly IAuthService authService;
+        private readonly IMapper mapper;
+
+        public AuthController(IAuthService authService, IMapper mapper) {
+            this.authService = authService;
+            this.mapper = mapper;
+        }
+
 
         [Authorize(Roles = Roles.GOD)]
         [HttpPost("registerAdmin")]
@@ -90,33 +97,5 @@ namespace SCI.WebAPI.Controllers {
             return Ok(tokensInfo.AccessToken);
         }
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Validate([FromBody] LoginRequest request) {
-        //    User user = await authService.FindUserAsync(request.Email);
-        //    var userModel = mapper.Map<UserModel>(user);
-
-        //    if (userModel == null) {
-        //        return ValidationProblem(Messages.EMAIL_NOT_EXIST);
-        //    }
-
-        //    var claims = new List<Claim>() {
-        //        new Claim(ClaimTypes.Email, request.Email),
-        //        new Claim(ClaimTypes.Role, userModel.Role)
-        //    };
-
-        //    var claimsIdentity = new ClaimsIdentity(claims, 
-        //        CookieAuthenticationDefaults.AuthenticationScheme);
-        //    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-        //    await HttpContext.SignInAsync(claimsPrincipal);
-
-        //    return Ok();
-        //}
-
-        //[Authorize]
-        //[HttpPost("logout")]
-        //public async Task<IActionResult> Logout() {
-        //    await HttpContext.SignOutAsync();
-        //    return Ok();
-        //}
     }
 }

@@ -20,18 +20,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SCI.WebAPI.Controllers {
+
     [ApiController]
     [Route("[controller]")]
     public partial class UsersController : ControllerBase {
 
-        private readonly IMapper mapper;
         private readonly IUserService userService;
 
-        public UsersController(
-            IAuthService authService, 
-            IUserService userService,
-            IMapper mapper) {
-            this.authService = authService;
+        public UsersController(IUserService userService, IMapper mapper) {
             this.mapper = mapper;
             this.userService = userService;
         }

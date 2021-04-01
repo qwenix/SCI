@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace SCI.Core.Entities.Events {
     public abstract class BaseEvent {
         public virtual DateTime DateTime { get; set; }
+
     }
 }
