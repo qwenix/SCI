@@ -18,11 +18,6 @@ namespace SCI.Core.Extensions {
             return company;
         }
 
-        public static Company WithoutUser(this Company company) {
-            company.User = null;
-            return company;
-        }
-
         public static Driver SetId(this Driver driver) {
             driver.Id = driver.ApplicationUser.Id = driver.ApplicationUser.User.Id;
             return driver;

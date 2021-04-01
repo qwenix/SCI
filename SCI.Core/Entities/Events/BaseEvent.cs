@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace SCI.Core.Entities.Events {
     public abstract class BaseEvent {
         public virtual DateTime DateTime { get; set; }
+        public virtual string DriverId { get; set; }
 
+        public virtual Driver Driver { get; set; }
     }
 }
