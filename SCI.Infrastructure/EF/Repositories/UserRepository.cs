@@ -42,6 +42,20 @@ namespace SCI.Infrastructure.EF.Repositories {
             return await userManager.FindByNameAsync(username);
         }
 
+        public async Task<User> FindByUsernameIfInRoleAsync(string username, string roleName) {
+            User user = await FindByUsernameAsync(username);
+            if (user is null) {
+                throw new Exception("User doesn't exist!");
+            }
+
+            bool inRole = await userManager.IsInRoleAsync(user, roleName);
+            if (inRole) {
+                return user;
+            }
+
+            return null;
+        }
+
         public async Task<bool> CheckPasswordAsync(User user, string password) {
             return await userManager.CheckPasswordAsync(user, password);
         }

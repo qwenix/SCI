@@ -15,6 +15,7 @@ namespace SCI.Core.Interfaces.Repositories {
         Task<IdentityResult> AddRoleAsync(IdentityRole role);
 
         Task<User> FindByUsernameAsync(string username);
+        Task<User> FindByUsernameIfInRoleAsync(string username, string roleName);
         Task<IList<string>> GetRolesAsync(User user);
         Task<bool> CheckPasswordAsync(User user, string password);
 

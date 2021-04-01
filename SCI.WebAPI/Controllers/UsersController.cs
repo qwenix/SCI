@@ -28,7 +28,6 @@ namespace SCI.WebAPI.Controllers {
         private readonly IUserService userService;
 
         public UsersController(IUserService userService, IMapper mapper) {
-            this.mapper = mapper;
             this.userService = userService;
         }
 

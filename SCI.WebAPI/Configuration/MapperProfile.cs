@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SCI.Core.Entities;
+using SCI.Core.Models;
 using SCI.WebAPI.Models;
 using SCI.WebAPI.Models.Auth;
 using System;
@@ -32,6 +33,17 @@ namespace SCI.WebAPI.Configuration {
 
             CreateMap<CompanyRegistrationRequest, Company>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(model => model))
+                .ReverseMap();
+            CreateMap<CompanyRegistrationRequest, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(model => model.Email))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(model => model.Email))
+                .ReverseMap();
+
+            CreateMap<Driver, DriverReview>()
+                .ForMember(dest => dest.AverageRideMiles, opt => opt.MapFrom(model => model.AverageRideMiles()))
+                .ForMember(dest => dest.AverageRideMiles, opt => opt.MapFrom(model => model.AverageRideMiles()))
+                .ForMember(dest => dest.AverageRideMiles, opt => opt.MapFrom(model => model.AverageRideMiles()))
+                .ForMember(dest => dest.AverageRideMiles, opt => opt.MapFrom(model => model.AverageRideMiles()))
                 .ReverseMap();
             CreateMap<CompanyRegistrationRequest, User>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(model => model.Email))
