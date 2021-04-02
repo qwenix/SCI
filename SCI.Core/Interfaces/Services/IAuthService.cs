@@ -18,7 +18,7 @@ namespace SCI.Core.Interfaces.Services {
 
         Task<TokensInfo> LoginAsync(string username, string password);
 
-        Task CreateRoleAsync(IdentityRole role);
+        Task CreateRoleAsync(IdentityRole<int> role);
     }
 
 }

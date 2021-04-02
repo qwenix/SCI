@@ -57,6 +57,7 @@ namespace SCI.WebAPI.Configuration {
             services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<IDriverRepository, DriverRepository>();
+            services.AddTransient<IRideRepository, RideRepository>();
         }
 
         public static void AddCoreServices(this IServiceCollection services) {
@@ -64,6 +65,7 @@ namespace SCI.WebAPI.Configuration {
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IDriverService, DriverService>();
 
             services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
             services.AddSingleton<IRefreshTokenFactory, RefreshTokenFactory>();
@@ -80,7 +82,7 @@ namespace SCI.WebAPI.Configuration {
         }
 
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services) {
-            services.AddIdentity<User, IdentityRole>(
+            services.AddIdentity<User, IdentityRole<int>>(
                 config => {
                     config.User.RequireUniqueEmail = true;
                     config.Password.RequireNonAlphanumeric = false;

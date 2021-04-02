@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SCI.Core.Entities {
     public class Driver : BaseEntity {
 
-        public string CompanyId;
+        public int CompanyId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
         public Company Company { get; set; }

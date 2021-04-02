@@ -23,6 +23,8 @@ using System.Threading.Tasks;
 
 namespace SCI.WebAPI.Controllers {
 
+    [ApiController]
+    [Route("[controller]")]
     public class AuthController : ControllerBase {
 
         private readonly IAuthService authService;
@@ -69,10 +71,10 @@ namespace SCI.WebAPI.Controllers {
 
         [HttpPost("registerGod")]
         public async Task<IActionResult> RegisterGodAsync() {
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.GOD });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.COMPANY });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.ADMIN });
-            await authService.CreateRoleAsync(new IdentityRole { Name = Roles.DRIVER });
+            await authService.CreateRoleAsync(new IdentityRole<int> { Name = Roles.GOD });
+            await authService.CreateRoleAsync(new IdentityRole<int> { Name = Roles.COMPANY });
+            await authService.CreateRoleAsync(new IdentityRole<int> { Name = Roles.ADMIN });
+            await authService.CreateRoleAsync(new IdentityRole<int> { Name = Roles.DRIVER });
 
             var identity = new User {
                 Email = "denys.kravtsov@nure.ua"

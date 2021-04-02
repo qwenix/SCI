@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
     public class Ride {
-        public string DriverId { get; set; }
+        public int DriverId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double AverageSpeed { get; set; }
@@ -16,7 +16,7 @@ namespace SCI.Core.Entities {
         public int SharpSpeedUpsAmount { get; set; }
         public int SharpSlowDownsAmount { get; set; }
         public int SharpSteeringsWheelAmount { get; set; }
-        public double PhoneUsageTime { get; set; }
+        public int PhoneUsageSeconds { get; set; }
 
         public Driver Driver { get; set; }
     }

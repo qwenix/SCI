@@ -43,9 +43,9 @@ namespace SCI.Core.Entities {
         public int AllowedSharpSteeringsWheelAmount { get; set; }
         public int SharpSteeringsWheelAmountPriority { get; set; }
 
-        public double MaxPhoneUsageTime { get; set; }
-        public double AllowedPhoneUsageTime { get; set; }
-        public int PhoneUsageTimePriority { get; set; }
+        public int MaxPhoneUsageSeconds { get; set; }
+        public int AllowedPhoneUsageSeconds { get; set; }
+        public int PhoneUsageSecondsPriority { get; set; }
 
         #endregion
 

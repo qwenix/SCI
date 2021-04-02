@@ -11,5 +11,6 @@ namespace SCI.Core.Interfaces.Repositories {
     public interface IDriverRepository : IBaseRepository {
         Task AddAsync(Driver driver);
         Task<Driver> GetByUsernameWithRides(string username);
+        Task<Driver> GetByUsername(string username);
     }
 }

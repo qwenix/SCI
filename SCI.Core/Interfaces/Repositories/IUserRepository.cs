@@ -12,7 +12,7 @@ namespace SCI.Core.Interfaces.Repositories {
         Task<IdentityResult> AddUserToRoleAsync(User user, string roleName);
         Task<IdentityResult> AddUserAsync(User user, string password);
         Task<IdentityResult> AddUserPasswordAsync(User user, string password);
-        Task<IdentityResult> AddRoleAsync(IdentityRole role);
+        Task<IdentityResult> AddRoleAsync(IdentityRole<int> role);
 
         Task<User> FindByUsernameAsync(string username);
         Task<User> FindByUsernameIfInRoleAsync(string username, string roleName);

@@ -21,8 +21,12 @@ namespace SCI.Services {
             this.mapper = mapper;
         }
 
-        public async Task<DriverReview> GetDriverReview(string driverUsername, int daysPeriod) {
-            Driver driver = await driverRepository.GetByUsernameWithRides(driverUsername);
+        public async Task<Driver> GetByUsernameAsync(string username) {
+            return await driverRepository.GetByUsername(username);
+        }
+
+        public async Task<DriverReview> GetReviewAsync(string username, int daysPeriod) {
+            Driver driver = await driverRepository.GetByUsernameWithRides(username); 
             IEnumerable<Ride> rides = driver.GetLastRides(daysPeriod);
             var driverReview = mapper.Map<DriverReview>(rides);
             driverReview.DaysPeriod = daysPeriod;

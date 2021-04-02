@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 namespace SCI.WebAPI.Controllers {
     public class CompanyController : Controller {
         
-        [Authorize(Roles = Roles.COMPANY)]
-        [HttpPost("setStandards")]
-        public IActionResult SetStandards() {
 
-        }
     }
 }

@@ -14,10 +14,10 @@ namespace SCI.Infrastructure.EF.Repositories {
     public class UserRepository : IUserRepository {
 
         private readonly UserManager<User> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<IdentityRole<int>> roleManager;
 
         public UserRepository(UserManager<User> userManager, 
-            RoleManager<IdentityRole> roleManager) {
+            RoleManager<IdentityRole<int>> roleManager) {
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
@@ -34,7 +34,7 @@ namespace SCI.Infrastructure.EF.Repositories {
             return await userManager.AddPasswordAsync(user, password);
         }
 
-        public async Task<IdentityResult> AddRoleAsync(IdentityRole role) {
+        public async Task<IdentityResult> AddRoleAsync(IdentityRole<int> role) {
             return await roleManager.CreateAsync(role);
         }
 

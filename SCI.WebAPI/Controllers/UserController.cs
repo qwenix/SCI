@@ -23,11 +23,11 @@ namespace SCI.WebAPI.Controllers {
 
     [ApiController]
     [Route("[controller]")]
-    public partial class UsersController : ControllerBase {
+    public partial class UserController : ControllerBase {
 
         private readonly IUserService userService;
 
-        public UsersController(IUserService userService, IMapper mapper) {
+        public UserController(IUserService userService, IMapper mapper) {
             this.userService = userService;
         }
 

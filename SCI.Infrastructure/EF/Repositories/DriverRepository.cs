@@ -26,15 +26,25 @@ namespace SCI.Infrastructure.EF.Repositories {
             await dbContext.Set<Driver>().AddAsync(driver);
         }
 
+        public async Task<Driver> GetByUsername(string username) {
+            User user = await GetUserIfInRoleAsync(username, Roles.DRIVER);
+            return await dbContext.Set<Driver>().FirstAsync(d => d.Id == user.Id);
+        }
+
         public async Task<Driver> GetByUsernameWithRides(string username) {
-            User user = await userRepository.FindByUsernameIfInRoleAsync(username, Roles.DRIVER);
-            if (user is null) {
-                throw new Exception("User is not Driver!");
-            }
+            User user = await GetUserIfInRoleAsync(username, Roles.DRIVER);
             return await dbContext
                 .Set<Driver>()
                 .Include(d => d.Rides)
                 .FirstAsync(d => d.Id == user.Id);
+        }
+
+        private async Task<User> GetUserIfInRoleAsync(string username, string roleName) {
+            User user = await userRepository.FindByUsernameIfInRoleAsync(username, Roles.DRIVER);
+            if (user is null) {
+                throw new Exception("User is not Driver!");
+            }
+            return user;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace SCI.WebAPI.Configuration {
                 .ForMember(dest => dest.OverspeedingAmount, 
                     opt => opt.MapFrom(model => model.Sum(r => r.OverSpeedingAmount)))
                 .ForMember(dest => dest.PhoneUsageTime, 
-                    opt => opt.MapFrom(model => model.Sum(r => r.PhoneUsageTime)))
+                    opt => opt.MapFrom(model => model.Sum(r => r.PhoneUsageSeconds)))
                 .ForMember(dest => dest.SharpSlowDownsAmount, 
                     opt => opt.MapFrom(model => model.Sum(r => r.SharpSlowDownsAmount)))
                 .ForMember(dest => dest.SharpSpeedUpsAmount, opt => 

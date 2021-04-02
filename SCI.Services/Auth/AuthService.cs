@@ -47,47 +47,42 @@ namespace SCI.Services.Auth {
         }
 
         public async Task RegisterUserAsync(User user, string roleName, string password) {
-            var result = await userRepository.AddUserAsync(user, password);
-            if (!result.Succeeded) {
-                throw new Exception(result.Errors.First().Description);
-            }
-            await userRepository.AddUserToRoleAsync(user, roleName);
+            await AddUserAsync(user, password);
+            await AddUserToRoleAsync(user, roleName);
         }
 
         public async Task RegisterAdminAsync(ApplicationUser applicationUser) {
-            string password = passwordGenerator.GeneratePassword();
-            await userRepository.AddUserPasswordAsync(applicationUser.User, password);
-
             await applicationUserRepository.AddAsync(applicationUser);
             await applicationUserRepository.SaveChangesAsync();
 
-            await userRepository.AddUserToRoleAsync(applicationUser.User, Roles.ADMIN);
+            string password = passwordGenerator.GeneratePassword();
+            await AddUserPasswordAsync(applicationUser.User, password);
+            await AddUserToRoleAsync(applicationUser.User, Roles.ADMIN);
 
             await emailService.SendEmailAsync(applicationUser.User.Email, password);
         }
 
         public async Task RegisterDriverAsync(Driver driver, string password) {
-            await userRepository.AddUserPasswordAsync(driver.ApplicationUser.User, password);
-
             await driverRepository.AddAsync(driver);
-            
-            await userRepository.AddUserToRoleAsync(driver.ApplicationUser.User, Roles.DRIVER);
+            await driverRepository.SaveChangesAsync();
 
-            await emailService.SendEmailAsync(driver.ApplicationUser.User.Email, password);
+            await AddUserPasswordAsync(driver.ApplicationUser.User, password);
+            await AddUserToRoleAsync(driver.ApplicationUser.User, Roles.DRIVER);
         }
 
         public async Task RegisterCompanyAsync(Company company) {
             string password = passwordGenerator.GeneratePassword();
-            await userRepository.AddUserPasswordAsync(company.User, password);
 
             await companyRepository.AddAsync(company);
             await companyRepository.SaveChangesAsync();
-            await userRepository.AddUserToRoleAsync(company.User, Roles.COMPANY);
+
+            await AddUserPasswordAsync(company.User, password);
+            await AddUserToRoleAsync(company.User, Roles.COMPANY);
 
             await emailService.SendEmailAsync(company.User.Email, password);
         }
 
-        public async Task CreateRoleAsync(IdentityRole role) {
+        public async Task CreateRoleAsync(IdentityRole<int> role) {
             var result = await userRepository.AddRoleAsync(role);
             if (!result.Succeeded) {
                 throw new Exception(result.Errors.First().Description);
@@ -116,11 +111,32 @@ namespace SCI.Services.Auth {
         private async Task<Claim[]> GetAuthTokenClaimsForUserAsync(User user) {
             IList<string> userRoles = await userRepository.GetRolesAsync(user);
             var userClaims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, userRoles.First())
             };
             return userClaims;
+        }
+
+        private async Task AddUserPasswordAsync(User user, string password) {
+            IdentityResult identityResult = await userRepository.AddUserPasswordAsync(user, password);
+            if (!identityResult.Succeeded) {
+                throw new Exception(identityResult.Errors.First().Description);
+            }
+        }
+
+        private async Task AddUserAsync(User user, string password) {
+            IdentityResult identityResult = await userRepository.AddUserAsync(user, password);
+            if (!identityResult.Succeeded) {
+                throw new Exception(identityResult.Errors.First().Description);
+            }
+        }
+
+        private async Task AddUserToRoleAsync(User user, string roleName) {
+            IdentityResult identityResult = await userRepository.AddUserToRoleAsync(user, roleName);
+            if (!identityResult.Succeeded) {
+                throw new Exception(identityResult.Errors.First().Description);
+            }
         }
 
         //public async Task<TokenRefreshResponseDTO> RefreshTokenAsync(TokenRefreshRequestDTO request) {

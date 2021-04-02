@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Entities {
-    public class User : IdentityUser {
+    public class User : IdentityUser<int> {
         public Company Company { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
