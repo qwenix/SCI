@@ -60,12 +60,11 @@ namespace SCI.Services {
             foreach (var property in company.GetType().GetProperties()) {
                 object[] attributes = property.GetCustomAttributes(false);
                 if (attributes.Any(a => a is PriorityPropertyAttribute)) {
-                    string name = property.Name.ToRatePropertyName();
                     int priority = Convert.ToInt32(property
                         .GetValue(company));
                     double rate = Convert.ToDouble(driverStyleReview
                         .GetType()
-                        .GetProperty(name.ToRatePropertyName())
+                        .GetProperty(property.Name.ToRatePropertyName())
                         .GetValue(driverStyleReview));
 
                     ratesPriorities.Add(new KeyValuePair<int, double>(priority, rate));

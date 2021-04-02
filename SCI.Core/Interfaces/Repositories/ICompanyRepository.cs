@@ -9,5 +9,6 @@ using System.Threading.Tasks;
 namespace SCI.Core.Interfaces.Repositories {
     public interface ICompanyRepository : IBaseRepository {
         Task AddAsync(Company company);
+        void Update(Company company);
     }
 }

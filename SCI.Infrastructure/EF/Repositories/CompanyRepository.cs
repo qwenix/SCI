@@ -19,5 +19,9 @@ namespace SCI.Infrastructure.EF.Repositories {
         public async Task AddAsync(Company company) {
             await dbContext.Set<Company>().AddAsync(company);
         }
+
+        public void Update(Company company) {
+            dbContext.Set<Company>().Update(company);
+        }
     }
 }
