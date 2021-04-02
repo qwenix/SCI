@@ -12,5 +12,6 @@ namespace SCI.Core.Interfaces.Repositories {
         Task AddAsync(Driver driver);
         Task<Driver> GetByUsernameWithRides(string username);
         Task<Driver> GetByUsername(string username);
+        Task<Driver> GetByUsernameWithCompany(string username);
     }
 }

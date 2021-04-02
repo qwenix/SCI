@@ -44,16 +44,18 @@ namespace SCI.WebAPI.Configuration {
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(model => model.Email))
                 .ReverseMap();
 
-            CreateMap<IEnumerable<Ride>, DriverReview>()
+            CreateMap<IEnumerable<Ride>, DriverRidesReview>()
+                .ForMember(dest => dest.TotalRides,
+                    opt => opt.MapFrom(model => model.Count()))
                 .ForMember(dest => dest.AverageRideMiles, 
                     opt => opt.MapFrom(model => model.Average(r => r.Mileage)))
                 .ForMember(dest => dest.AverageSpeed, 
                     opt => opt.MapFrom(model => model.Average(r => r.AverageSpeed)))
                 .ForMember(dest => dest.Mileage, 
                     opt => opt.MapFrom(model => model.Sum(r => r.Mileage)))
-                .ForMember(dest => dest.OverspeedingAmount, 
+                .ForMember(dest => dest.OverSpeedingAmount, 
                     opt => opt.MapFrom(model => model.Sum(r => r.OverSpeedingAmount)))
-                .ForMember(dest => dest.PhoneUsageTime, 
+                .ForMember(dest => dest.PhoneUsageSeconds, 
                     opt => opt.MapFrom(model => model.Sum(r => r.PhoneUsageSeconds)))
                 .ForMember(dest => dest.SharpSlowDownsAmount, 
                     opt => opt.MapFrom(model => model.Sum(r => r.SharpSlowDownsAmount)))
@@ -63,6 +65,11 @@ namespace SCI.WebAPI.Configuration {
                     opt => opt.MapFrom(model => model.Sum(r => r.SharpSteeringsWheelAmount)))
                 .ForMember(dest => dest.SharpTurnEntriesAmount, 
                     opt => opt.MapFrom(model => model.Sum(r => r.SharpTurnEntriesAmount)));
+
+            CreateMap<Company, Company>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ReverseMap();
+
         }
     }
 }

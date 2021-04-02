@@ -31,6 +31,14 @@ namespace SCI.Infrastructure.EF.Repositories {
             return await dbContext.Set<Driver>().FirstAsync(d => d.Id == user.Id);
         }
 
+        public async Task<Driver> GetByUsernameWithCompany(string username) {
+            User user = await GetUserIfInRoleAsync(username, Roles.DRIVER);
+            return await dbContext
+                .Set<Driver>()
+                .Include(d => d.Company)
+                .FirstAsync(d => d.Id == user.Id);
+        }
+
         public async Task<Driver> GetByUsernameWithRides(string username) {
             User user = await GetUserIfInRoleAsync(username, Roles.DRIVER);
             return await dbContext

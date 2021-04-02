@@ -7,8 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SCI.Core.Interfaces.Services {
-    public interface IDriverService {
-        Task<DriverRidesReview> GetReviewAsync(string username, int? daysPeriod);
-        Task<Driver> GetByUsernameAsync(string username);
+    public interface ICompanyService {
+        Task Update(Company company);
     }
 }

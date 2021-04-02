@@ -66,6 +66,8 @@ namespace SCI.WebAPI.Configuration {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IDriverService, DriverService>();
+            services.AddTransient<IConvolutionService, ConvolutionService>();
+            services.AddTransient<IDriverStyleService, DriverStyleService>();
 
             services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
             services.AddSingleton<IRefreshTokenFactory, RefreshTokenFactory>();
