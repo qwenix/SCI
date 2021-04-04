@@ -38,7 +38,7 @@ namespace SCI.Core.Extensions {
                 double weight = 0;
                 while(j < ratesWeights.Count && ratesWeights[j].Key == priority) {
                     j++;
-                    weight = (weight + ratesWeights.Count - j + 1);
+                    weight += ratesWeights.Count - j + 1;
                 }
                 weight /= j - i;
 

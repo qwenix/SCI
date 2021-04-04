@@ -39,7 +39,8 @@ namespace SCI.Services {
 
             Driver driver = await driverRepository.GetByUsernameWithRides(username); 
             IEnumerable<Ride> rides = driver.GetLastRides(days);
-            var driverReview = mapper.Map<DriverRidesReview>(rides);
+            var driverReview = rides.Count() == 0 ? new DriverRidesReview() : 
+                mapper.Map<DriverRidesReview>(rides);
             driverReview.DaysPeriod = days;
             driverReview.DriverUsername = username;
             return driverReview;

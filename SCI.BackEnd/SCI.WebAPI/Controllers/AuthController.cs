@@ -42,7 +42,7 @@ namespace SCI.WebAPI.Controllers {
             if (ModelState.IsValid) {
                 var user = mapper.Map<ApplicationUser>(request).SetId();
                 await authService.RegisterAdminAsync(user);
-                return Ok();
+                return Ok(user.Id);
             }
             return ValidationProblem(ModelState);
         }
@@ -53,7 +53,7 @@ namespace SCI.WebAPI.Controllers {
             if (ModelState.IsValid) {
                 var driver = mapper.Map<Driver>(request).SetId();
                 await authService.RegisterDriverAsync(driver, request.Password);
-                return Ok();
+                return Ok(driver.Id);
             }
             return ValidationProblem(ModelState);
         }
@@ -64,7 +64,7 @@ namespace SCI.WebAPI.Controllers {
             if (ModelState.IsValid) {
                 var company = mapper.Map<Company>(request).SetId();
                 await authService.RegisterCompanyAsync(company);
-                return Ok();
+                return Ok(company.Id);
             }
             return ValidationProblem(ModelState);
         }

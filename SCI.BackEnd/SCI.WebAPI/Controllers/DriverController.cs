@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SCI.Core.Constants;
 using SCI.Core.Entities;
+using SCI.Core.Interfaces.Repositories;
 using SCI.Core.Interfaces.Services;
 using SCI.Core.Models;
 using System;
@@ -17,11 +18,14 @@ namespace SCI.WebAPI.Controllers {
 
         private readonly IDriverService driverService;
         private readonly IDriverStyleService drivingStyleService;
+        private readonly IDriverRepository driverRepository;
 
         public DriverController(IDriverService driverService,
-            IDriverStyleService drivingStyleService) {
+            IDriverStyleService drivingStyleService,
+            IDriverRepository driverRepository) {
             this.driverService = driverService;
             this.drivingStyleService = drivingStyleService;
+            this.driverRepository = driverRepository;
         }
 
         [HttpGet("review")]
@@ -38,6 +42,12 @@ namespace SCI.WebAPI.Controllers {
         public async Task<IActionResult> GetDriverStyleRateByUsername(string username, int? daysPeriod = null) {
             DriverRidesReview driverRidesReview = await driverService.GetReviewAsync(username, daysPeriod);
             return Ok(await drivingStyleService.GetDriverStyleReview(driverRidesReview));
+        }
+
+        [HttpGet("discount")]
+        public async Task<IActionResult> GetDiscountByScore(string username, double score) {
+            var driver = await driverRepository.GetByUsernameWithCompany(username);
+            return Ok(score / 100 * driver.Company.MaxDiscountPersentage);
         }
     }
 }
